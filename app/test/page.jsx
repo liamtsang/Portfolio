@@ -33,7 +33,6 @@ export default function Page() {
           <h1 className='my-4 text-5xl font-bold leading-tight'>Next 3D Starter</h1>
           <p className='mb-8 text-2xl leading-normal'>A minimalist starter for React, React-three-fiber and Threejs.</p>
         </div>
-
         <div className='w-full text-center md:w-3/5'>
           <View className='flex h-96 w-full flex-col items-center justify-center'>
             <Suspense fallback={null}>
@@ -43,7 +42,6 @@ export default function Page() {
           </View>
         </div>
       </div>
-
       <div className='mx-auto flex w-full flex-col flex-wrap items-center p-12 md:flex-row  lg:w-4/5'>
         {/* first row */}
         <div className='relative h-48 w-full py-6 sm:w-1/2 md:my-12 md:mb-40'>
@@ -80,3 +78,4 @@ export default function Page() {
     </>
   )
 }
+5

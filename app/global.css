@@ -19,7 +19,11 @@
 }
 
 .h300 {
-  height: 400%;
+  height: 600%;
+}
+#projects {
+  height: 600%;
+  right: calc(var(--pad) * 2);
 }
 
 header {
@@ -70,10 +74,6 @@ header {
   height: 1px;
 }
 
-#projects {
-  height: 400%;
-  right: calc(var(--pad) * 2);
-}
 #backButton {
   right: calc(var(--pad) * 3);
 }
@@ -105,4 +105,7 @@ header {
   height: 100%;
   top: 0;
   left: 0;
+}
+canvas {
+  opacity: 70%;
 }

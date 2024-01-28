@@ -29,11 +29,11 @@ export default function RootLayout({ children }) {
             <h2 className='text-sm text-slate-300'>GitHub</h2>
           </div>
         </header>
-        <div id='Frame' class='frame'>
-          <div class='frame_line frame_line-left'></div>
-          <div class='frame_line frame_line-right'></div>
-          <div class='frame_line frame_line-top'></div>
-          <div class='frame_line frame_line-bottom'></div>
+        <div id='Frame' className='frame'>
+          <div className='frame_line frame_line-left'></div>
+          <div className='frame_line frame_line-right'></div>
+          <div className='frame_line frame_line-top'></div>
+          <div className='frame_line frame_line-bottom'></div>
         </div>
         {/* To avoid FOUT with styled-components wrap Layout with StyledComponentsRegistry https://beta.nextjs.org/docs/styling/css-in-js#styled-components */}
         <Layout>{children}</Layout>
