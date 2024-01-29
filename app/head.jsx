@@ -6,7 +6,7 @@ const twitter = '@'
 
 export default function Head() {
   return (
-    <>
+    <head>
       {/* Recommended Meta Tags */}
       <meta charSet='utf-8' />
       <meta name='language' content='english' />
@@ -55,6 +55,6 @@ export default function Head() {
         Be sure validate your Twitter card markup on the documentation site. */}
       <meta name='twitter:card' content='summary' />
       <meta name='twitter:site' content={twitter} />
-    </>
+    </head>
   )
 }

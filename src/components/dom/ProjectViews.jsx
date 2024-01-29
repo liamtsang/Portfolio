@@ -65,22 +65,32 @@ export default function ProjectViews() {
 
   return (
     <>
-      <div id='projects' className='z-10 relative text-right py-40'>
+      <div id='projects' className='relative z-10 py-40 text-right'>
         <div id='cube' className='mt-10'>
           {/* Intro */}
-          <div className='face first bottom-0 right-0'>
-            <div id='projectTitle' className={nytype82.className + ' text-3xl'}>
+          <div className='bottom-0 right-0 face first'>
+            <div id='projectTitle' className={nytype82.className + ' text-4xl'}>
               Hi, I'm <span className='text-yellow-300'>Liam</span>
             </div>
-            <div id='description' className='z-0 text-lg font-medium mt-2 right-0 pl-10'>
-              I'm a <mark>creative developer </mark>and <mark>designer</mark> with a focus on 3D web development. I
-              believe in taking the web to new places, and creating experiences that are <mark>fun</mark>,{' '}
+            <div
+              id='description'
+              className='right-0 z-0 pl-8 mt-2 text-lg font-medium md:pl-40'
+            >
+              I'm a{' '}
+              <mark>
+                <span>creative developer</span>
+              </mark>
+              &nbsp;and <mark>designer</mark> with a focus on 3D web
+              development. I believe in taking the web to new places, and
+              creating experiences that are <mark>fun</mark>,{' '}
               <mark>engaging</mark>, and <mark>memorable</mark>.
             </div>
-            <div className='flex items-center justify-center text-center text-xs mt-3 opacity-75'>
-              <div style={{ marginRight: 'calc(var(--pad) * -2)' }}>Scroll Down For Projects</div>
+            <div className='flex items-center justify-center mt-3 text-xs text-center opacity-75'>
+              <div style={{ marginRight: 'calc(var(--pad) * -2)' }}>
+                Scroll down
+              </div>
             </div>
-            <div className='flex items-center justify-center text-center text-xs mt-0 opacity-75'>
+            <div className='flex items-center justify-center mt-0 -mb-2 text-xs text-center opacity-75'>
               <div style={{ marginRight: 'calc(var(--pad) * -2)' }}>◡</div>
             </div>
           </div>
@@ -119,27 +129,60 @@ export default function ProjectViews() {
             description=' A visually bold, yet simple and clean portfolio website for graphic and product designer Adir Landes. A
             simple static website that mostly tested my hosting and deployment skills.'
           />
+          {/* Outro */}
+          <div className='bottom-0 right-0 face padleft'>
+            <div
+              id='projectTitle'
+              className={nytype82.className + ' text-4xl text-left '}
+            >
+              Let's work together.
+            </div>
+            <ul className='text-left'>
+              <li>
+                <Link
+                  href='mailto:liamtsang@gmail.com'
+                  id='description'
+                  className='right-0 z-0 mt-2 text-lg font-medium text-blue-400 underline'
+                >
+                  liamtsang@gmail.com
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='mailto:liamtsang@gmail.com'
+                  id='description'
+                  className='right-0 z-0 mt-2 text-lg font-medium text-blue-400 underline'
+                >
+                  LinkedIn
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div ref={viewsContainer} id='Three' className='h-full w-screen'>
-        <View className='view first h-screen w-full flex-col items-center justify-center'>
+      <div ref={viewsContainer} id='Three' className='w-screen h-full'>
+        <View className='flex-col items-center justify-center w-full h-screen view first'>
           <TorusBoxes />
           <Common />
         </View>
-        <View className='view h-screen w-full flex-col items-center justify-center'>
+        <View className='flex-col items-center justify-center w-full h-screen view'>
           <Glyph />
           <Common />
         </View>
-        <View className='view h-screen w-full flex-col items-center justify-center'>
+        <View className='flex-col items-center justify-center w-full h-screen view'>
           <House scale={3.3} />
           <Common />
         </View>
-        <View className='view h-screen w-full flex-col items-center justify-center'>
+        <View className='flex-col items-center justify-center w-full h-screen view'>
           <Shibuya />
           <Common fov={120} />
         </View>
-        <View className='view h-screen w-full flex-col items-center justify-center'>
+        <View className='flex-col items-center justify-center w-full h-screen view'>
           <AdirImages />
+          <Common />
+        </View>
+        <View className='flex-col items-center justify-center w-full h-screen view'>
+          <Rainbow />
           <Common />
         </View>
       </div>
@@ -153,13 +196,19 @@ function Face(props) {
     let span
     if (i == props.tech.length - 1) {
       span = (
-        <span key={i} className='rounded-2xl border border-red-500 py-1 px-2 text-center'>
+        <span
+          key={i}
+          className='px-2 py-1 text-center border border-red-500 rounded-2xl'
+        >
           {props.tech[i]}
         </span>
       )
     } else {
       span = (
-        <span key={i} className='rounded-2xl border border-red-500 py-1 px-2 mx-1 text-center'>
+        <span
+          key={i}
+          className='px-2 py-1 mx-1 text-center border border-red-500 rounded-2xl'
+        >
           {props.tech[i]}
         </span>
       )
@@ -168,18 +217,25 @@ function Face(props) {
   }
 
   return (
-    <div className='face bottom-0 right-0'>
-      <Link className='hover:text-red-500' target='_blank' href={props.link}>
-        <div id='projectTitle' className={nytype82.className + ' text-3xl'}>
-          <span className='text-red-500 text-base pr-2'>&#10697;</span> {props.title}
+    <div className='bottom-0 right-0 face'>
+      <Link id='projectLink' className='' target='_blank' href={props.link}>
+        <div
+          id='projectTitle'
+          className={nytype82.className + ' hover:text-red-500 text-2xl'}
+        >
+          <span className='pr-2 text-base text-red-500'>&#10697;</span>{' '}
+          {props.title}
         </div>
       </Link>
-      <div id='subTitle' className='text-md font-semibold my-2'>
+      <div id='subTitle' className='mb-2 font-semibold text-md'>
         <Suspense fallback={<div>Loading...</div>}>{props.subtitle}</Suspense>
       </div>
 
-      <div className='text-xs font-semibold mt-4 '>{tech}</div>
-      <div id='description' className='z-0 text-lg font-medium mt-2 right-0 pl-40'>
+      <div className='mt-4 text-xs font-semibold '>{tech}</div>
+      <div
+        id='description'
+        className='right-0 z-0 pl-8 mt-2 text-lg font-medium text-balance md:pl-40'
+      >
         {props.description}
       </div>
     </div>

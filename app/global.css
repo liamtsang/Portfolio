@@ -109,3 +109,20 @@ header {
 canvas {
   opacity: 70%;
 }
+mark {
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+}
+.padleft {
+  padding-left: calc(var(--pad) * 2);
+}
+/* #projectTitle {
+  background: #fff;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0) 50%, red 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all 0.5s ease;
+}
+#projectTitle:hover {
+  background-position: left bottom;
+} */

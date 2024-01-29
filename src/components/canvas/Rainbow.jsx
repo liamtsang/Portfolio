@@ -9,35 +9,14 @@ export default function Rainbow(props) {
   const ref = useRef()
   gsap.registerPlugin(ScrollTrigger)
 
-  // GSAP
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.to(ref.current.rotation, {
-        scrollTrigger: {
-          scrub: true,
-        },
-        x: '5',
-        y: '3',
-        z: '.45',
-        ease: '',
-        repeatRefresh: true,
-      })
-      gsap.to(ref.current.position, {
-        scrollTrigger: {
-          scrub: true,
-        },
-        ease: 'power1.inOut',
-        repeatRefresh: true,
-      })
-    }, ref) // <- scopes all selector text inside the context to this component (optional, default is document)
-    return () => ctx.revert() // cleanup!
-  }, [])
-
-  // Building Circles
   const circles = []
   for (let i = 0; i < 21; i++) {
     circles.push(<Circle key={i} position={[0, 0, i / 10]} hue={i * 15} />)
   }
+
+  useFrame((state, delta) => {
+    ref.current.rotation.x += 0.001
+  })
 
   return (
     <Center>
