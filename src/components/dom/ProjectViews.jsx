@@ -56,6 +56,7 @@ export default function ProjectViews() {
           transform: 'rotateX(0deg)',
           opacity: 1,
           duration: 0.5,
+        })
         currentView = newView
         currentFace = newFace
       }
