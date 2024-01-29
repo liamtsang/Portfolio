@@ -5,14 +5,14 @@ import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
-import { View } from '@/components/canvas/View'
-import { Common } from '@/components/canvas/View'
-import Glyph from '@/components/canvas/Glyph'
-import House from '@/components/canvas/parametric/ShapingCurves'
-import Rainbow from '@/components/canvas/Rainbow'
-import Shibuya from '@/components/canvas/360Video'
-import AdirImages from '@/components/canvas/AdirImages'
-import TorusBoxes from '@/components/canvas/TorusBoxes'
+import { View } from '../../components/canvas/View'
+import { Common } from '../../components/canvas/View'
+import Glyph from '../../components/canvas/Glyph'
+import House from '../../components/canvas/parametric/ShapingCurves'
+import Rainbow from '../../components/canvas/Rainbow'
+import Shibuya from '../../components/canvas/360Video'
+import AdirImages from '../../components/canvas/AdirImages'
+import TorusBoxes from '../../components/canvas/TorusBoxes'
 
 import NType82 from 'next/font/local'
 const nytype82 = NType82({ src: './NType82-Regular.ttf' })
@@ -56,7 +56,6 @@ export default function ProjectViews() {
           transform: 'rotateX(0deg)',
           opacity: 1,
           duration: 0.5,
-        })
         currentView = newView
         currentFace = newFace
       }
@@ -100,7 +99,7 @@ export default function ProjectViews() {
             tech={['Three.js', 'Astro', 'GSAP']}
             link='https://www.glyph.guru/'
             description='A mobile web app for viewing additional information on relics in museums. Using image recognition on the
-              physical object, museum goers will get to inspect the relic in a digital 3D space, and learn about time it
+              physical object, museum goers will get to inspect the relic in a digital 3D space, and learn about the time it
               came from.'
           />
           <Face
@@ -108,18 +107,14 @@ export default function ProjectViews() {
             subtitle='2023 | Commission'
             tech={['Three.js', 'React', 'WebGL']}
             link='https://houseofthegoldenthread.com/'
-            description='A mobile web app for viewing additional information on relics in museums. Using image recognition on the
-              physical object, museum goers will get to inspect the relic in a digital 3D space, and learn about time it
-              came from.'
+            description=''
           />
           <Face
             title='360° Video Art'
             subtitle='2023 | School'
             tech={['TouchDesigner', 'Three.JS', 'RunwayML']}
             link='https://www.youtube.com/watch?v=VntnhZ-1WCg'
-            description='A mobile web app for viewing additional information on relics in museums. Using image recognition on the
-              physical object, museum goers will get to inspect the relic in a digital 3D space, and learn about time it
-              came from.'
+            description=''
           />
           <Face
             title='Adir Landes Portfolio'
@@ -140,16 +135,16 @@ export default function ProjectViews() {
             <ul className='text-left'>
               <li>
                 <Link
-                  href='mailto:liamtsang@gmail.com'
+                  href='mailto:liamtsanggmail.com'
                   id='description'
                   className='right-0 z-0 mt-2 text-lg font-medium text-blue-400 underline'
                 >
-                  liamtsang@gmail.com
+                  liamtsanggmail.com
                 </Link>
               </li>
               <li>
                 <Link
-                  href='mailto:liamtsang@gmail.com'
+                  href='mailto:liamtsanggmail.com'
                   id='description'
                   className='right-0 z-0 mt-2 text-lg font-medium text-blue-400 underline'
                 >

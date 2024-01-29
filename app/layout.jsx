@@ -6,12 +6,12 @@ const description =
 const author = 'Liam Tsang'
 const twitter = '@'
 
-import { Layout } from '@/src/components/dom/Layout'
+import { Layout } from '../src/components/dom/Layout'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import './global.css'
-import { View } from '@/components/canvas/View'
-import { Common } from '@/components/canvas/View'
+import { View } from '../src/components/canvas/View'
+import { Common } from '../src/components/canvas/View'
 
 export default function RootLayout({ children }) {
   const pathname = usePathname()
@@ -50,6 +50,11 @@ export default function RootLayout({ children }) {
         <meta property='og:site_name' content={title} />
         <meta property='og:description' content={description} />
 
+        <link
+          rel='icon'
+          type='image/x-icon'
+          href='/icons/favicon-100x100.png'
+        />
         <link rel='apple-touch-icon' href='/icons/apple-touch-icon.png' />
         <link
           rel='apple-touch-icon'
@@ -91,9 +96,7 @@ export default function RootLayout({ children }) {
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:site' content={twitter} />
       </head>
-      <body
-        className={`tracking-tight min-h-screen min-w-screen max-w-screen ${pathname === '/projects' ? 'h300' : ''}`}
-      >
+      <body className='min-h-screen tracking-tight min-w-screen max-w-screen h300'>
         {/* <header className='grid w-full grid-cols-2'>
           <div className='mx-0 my-auto'>
             <h1 className='-mt-2 text-3xl font-thin'>Liam Tsang</h1>

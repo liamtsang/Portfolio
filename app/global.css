@@ -15,7 +15,12 @@
     padding: 0;
     --pad: max(20px, 4vmin);
     background-color: hsl(0, 0%, 5%);
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
+}
+body:-webkit-scrollbar {
+  display: none;
 }
 
 .h300 {
