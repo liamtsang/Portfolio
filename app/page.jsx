@@ -9,23 +9,8 @@ import Oracle from 'next/font/local'
 const oracle = Oracle({ src: 'ABCOracleVariable-Trial.ttf' })
 const archivo = Archivo({ subsets: ['latin'] })
 
-const Logo = dynamic(
-  () => import('@/components/canvas/Examples').then((mod) => mod.Logo),
-  { ssr: false },
-)
-const Duck = dynamic(
-  () => import('@/components/canvas/Examples').then((mod) => mod.Duck),
-  { ssr: false },
-)
-const ShapingCurves = dynamic(
-  () =>
-    import('@/components/canvas/parametric/ShapingCurves').then((mod) => mod),
-  {
-    ssr: false,
-  },
-)
-const Glyph = dynamic(
-  () => import('@/components/canvas/Glyph').then((mod) => mod),
+const Rainbow = dynamic(
+  () => import('@/components/canvas/Rainbow').then((mod) => mod),
   { ssr: false },
 )
 const View = dynamic(
@@ -72,6 +57,7 @@ export default function Page() {
           className='flex-col items-center justify-center w-full h-screen mix-blend-difference'
         >
           <Suspense fallback={null}>
+            <Rainbow />
             <Common />
           </Suspense>
         </View>

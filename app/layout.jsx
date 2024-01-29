@@ -6,7 +6,7 @@ const description =
 const author = 'Liam Tsang'
 const twitter = '@'
 
-import { Layout } from '@/components/dom/Layout'
+import { Layout } from '@/src/components/dom/Layout'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import './global.css'
