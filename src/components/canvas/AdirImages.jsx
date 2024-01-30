@@ -127,8 +127,10 @@ const WaveShaderMaterial = shaderMaterial(
   `,
   // Fragment Shader
   `
+    #ifdef GL_ES
     precision mediump float;
-
+    #endif
+    
     uniform vec3 uColor;
     uniform float uTime;
     uniform sampler2D uTexture;
