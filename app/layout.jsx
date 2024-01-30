@@ -9,7 +9,7 @@ const twitter = '@'
 import { Layout } from '../src/components/dom/Layout'
 import { usePathname } from 'next/navigation'
 import './global.css'
-import { Analytics } from '@vercel/analytics'
+import { Analytics } from '@vercel/analytics/react'
 
 export default function RootLayout({ children }) {
   const pathname = usePathname()
