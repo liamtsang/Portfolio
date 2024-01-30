@@ -7,15 +7,12 @@ const author = 'Liam Tsang'
 const twitter = '@'
 
 import { Layout } from '../src/components/dom/Layout'
-import { usePathname } from 'next/navigation'
 import './global.css'
 import { Analytics } from '@vercel/analytics/react'
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname()
-
   return (
-    <html lang='en' className='w-full h-full antialiased text-white'>
+    <html lang='en' className='h-full w-full text-white antialiased'>
       {/*
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
@@ -28,7 +25,6 @@ export default function RootLayout({ children }) {
         <meta name='author' content={author} />
         <meta name='designer' content={author} />
         <meta name='publisher' content={author} />
-
         {/* Search Engine Optimization Meta Tags */}
         <title>{title}</title>
         <meta name='description' content={description} />
@@ -47,7 +43,6 @@ export default function RootLayout({ children }) {
         <meta property='og:image' content={'/icons/share.png'} />
         <meta property='og:site_name' content={title} />
         <meta property='og:description' content={description} />
-
         <link
           rel='icon'
           type='image/x-icon'
@@ -76,7 +71,6 @@ export default function RootLayout({ children }) {
           href='/icons/safari-pinned-tab.svg'
         />
         <link rel='apple-touch-startup-image' href='/startup.png' />
-
         {/* Meta Tags for HTML pages on Mobile */}
         {/* <meta name="format-detection" content="telephone=yes"/>
         <meta name="HandheldFriendly" content="true"/>  */}
@@ -86,7 +80,6 @@ export default function RootLayout({ children }) {
         />
         <meta name='theme-color' content='#000' />
         <link rel='shortcut icon' href='/icons/apple-touch-icon.png' />
-
         {/* 
       Twitter Summary card
         documentation: https://dev.twitter.com/cards/getting-started
@@ -94,7 +87,7 @@ export default function RootLayout({ children }) {
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:site' content={twitter} />
       </head>
-      <body className='tracking-tight min-h-svh min-w-screen max-w-screen h300'>
+      <body className='min-w-screen max-w-screen h300 min-h-svh tracking-tight'>
         {/* <header className='grid w-full grid-cols-2'>
           <div className='mx-0 my-auto'>
             <h1 className='-mt-2 text-3xl font-thin'>Liam Tsang</h1>
