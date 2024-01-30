@@ -21,6 +21,7 @@
     "@gsap/react": "^2.1.0",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
+    "@vercel/analytics": "^1.1.2",
     "babel-plugin-glsl": "^1.0.0",
     "glsl-noise": "^0.0.0",
     "glsl-random": "^0.0.5",
