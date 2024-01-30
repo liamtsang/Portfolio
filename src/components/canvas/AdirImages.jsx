@@ -12,9 +12,7 @@ const WaveShaderMaterial = shaderMaterial(
   },
   // Vertex Shader
   `
-    #ifdef GL_ES
-    precision mediump float;
-    #endif
+    precision lowp float;
  
     varying vec2 vUv;
     varying float vWave;
@@ -127,10 +125,8 @@ const WaveShaderMaterial = shaderMaterial(
   `,
   // Fragment Shader
   `
-    #ifdef GL_ES
-    precision mediump float;
-    #endif
-    
+    precision lowp float;
+
     uniform vec3 uColor;
     uniform float uTime;
     uniform sampler2D uTexture;
