@@ -4,29 +4,20 @@ import { useFrame } from '@react-three/fiber'
 import { Plane, useTexture, MeshDistortMaterial } from '@react-three/drei'
 
 function Wave() {
-  const ref0 = useRef()
-  const ref1 = useRef()
-  const ref2 = useRef()
-  useFrame(
-    ({ clock }) => (
-      (ref0.current.uTime = clock.getElapsedTime() * 0.25 + 0.5),
-      (ref1.current.uTime = clock.getElapsedTime() * 0.25 + 1),
-      (ref2.current.uTime = clock.getElapsedTime() * 0.25 + 3)
-    ),
-  )
-
-  const texture = useTexture('img/adir0.png')
+  const texture0 = useTexture('img/adir0.png')
+  const texture1 = useTexture('img/adir1.png')
+  const texture2 = useTexture('img/adir2.png')
 
   return (
     <>
-      <Plane ref={ref0} position={[-1, 0, 0]} scale={0.9}>
-        <MeshDistortMaterial map={texture} distort={1} speed={10} />
+      <Plane args={[1, 2.14, 16, 16]} position={[-1, 0, 0]} scale={0.9}>
+        <MeshDistortMaterial map={texture0} distort={0.3} speed={1} />
       </Plane>
-      <Plane ref={ref1} position={[0, 0, 0]} scale={0.9}>
-        <MeshDistortMaterial distort={1} speed={10} />
+      <Plane args={[1, 2.14, 16, 16]} position={[0, 0, 0]} scale={0.9}>
+        <MeshDistortMaterial map={texture1} distort={0.322} speed={1} />
       </Plane>
-      <Plane ref={ref2} position={[1, 0, 0]} scale={0.9}>
-        <MeshDistortMaterial distort={1} speed={10} />
+      <Plane args={[1, 2.14, 16, 16]} position={[1, 0, 0]} scale={0.9}>
+        <MeshDistortMaterial map={texture2} distort={0.31} speed={1} />
       </Plane>
     </>
   )
