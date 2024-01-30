@@ -70,7 +70,7 @@ export default function ProjectViews() {
           {/* Intro */}
           <div className='bottom-0 right-0 face first'>
             <div id='projectTitle' className={nytype82.className + ' text-4xl'}>
-              Hi, I'm <span className='text-yellow-300'>Liam</span>
+              1 Hi, I'm <span className='text-yellow-300'>Liam</span>
             </div>
             <div
               id='description'
