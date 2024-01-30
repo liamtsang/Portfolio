@@ -8,10 +8,8 @@ const twitter = '@'
 
 import { Layout } from '../src/components/dom/Layout'
 import { usePathname } from 'next/navigation'
-import Link from 'next/link'
 import './global.css'
-import { View } from '../src/components/canvas/View'
-import { Common } from '../src/components/canvas/View'
+import { Analytics } from '@vercel/analytics'
 
 export default function RootLayout({ children }) {
   const pathname = usePathname()
@@ -114,6 +112,7 @@ export default function RootLayout({ children }) {
         </div>
         {/* To avoid FOUT with styled-components wrap Layout with StyledComponentsRegistry https://beta.nextjs.org/docs/styling/css-in-js#styled-components */}
         <Layout>{children}</Layout>
+        <Analytics />
       </body>
     </html>
   )
