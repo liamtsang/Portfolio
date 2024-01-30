@@ -11,7 +11,7 @@ const oracle = Oracle({ src: './ABCOracleVariable-Trial.ttf' })
 
 export default function Page() {
   return (
-    <main className={oracle.className + 'm-10 tracking-tighter text-zinc-100'}>
+    <main className={oracle.className + 'm-10 text-zinc-100'}>
       <ProjectViews />
     </main>
   )

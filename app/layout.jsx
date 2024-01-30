@@ -96,7 +96,7 @@ export default function RootLayout({ children }) {
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:site' content={twitter} />
       </head>
-      <body className='min-h-screen tracking-tight min-w-screen max-w-screen h300'>
+      <body className='tracking-tight min-h-svh min-w-screen max-w-screen h300'>
         {/* <header className='grid w-full grid-cols-2'>
           <div className='mx-0 my-auto'>
             <h1 className='-mt-2 text-3xl font-thin'>Liam Tsang</h1>

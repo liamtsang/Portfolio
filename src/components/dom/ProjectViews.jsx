@@ -136,11 +136,11 @@ export default function ProjectViews() {
             <ul className='text-left'>
               <li>
                 <Link
-                  href='mailto:liamtsanggmail.com'
+                  href='mailto:liamtsang@gmail.com'
                   id='description'
                   className='right-0 z-0 mt-2 text-lg font-medium text-blue-400 underline'
                 >
-                  liamtsanggmail.com
+                  liamtsang@gmail.com
                 </Link>
               </li>
               <li>
