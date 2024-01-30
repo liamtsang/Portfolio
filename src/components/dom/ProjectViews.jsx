@@ -68,12 +68,15 @@ export default function ProjectViews() {
         <div id='cube' className='mt-10'>
           {/* Intro */}
           <div className='face first bottom-0 right-0'>
-            <div id='projectTitle' className={nytype82.className + ' text-4xl'}>
+            <div
+              id='projectTitle'
+              className={nytype82.className + ' text-4xl xl:text-6xl'}
+            >
               Hi, I'm <span className='text-yellow-300'>Liam</span>
             </div>
             <div
               id='description'
-              className='right-0 z-0 mt-2 pl-8 text-lg font-medium md:pl-40'
+              className='right-0 z-0 mt-2 pl-8 text-lg font-medium leading-relaxed lg:pl-[50%] xl:text-3xl'
             >
               I'm a{' '}
               <mark>
@@ -245,20 +248,24 @@ function Face(props) {
       <Link id='projectLink' className='' target='_blank' href={props.link}>
         <div
           id='projectTitle'
-          className={nytype82.className + ' text-2xl hover:text-blue-500'}
+          className={
+            nytype82.className + ' text-2xl hover:text-blue-500 xl:text-4xl'
+          }
         >
-          <span className='pr-2 text-base text-red-500'>&#10697;</span>{' '}
+          <span className='pr-2 text-base text-red-500 xl:text-xl'>
+            &#10697;
+          </span>{' '}
           {props.title}
         </div>
       </Link>
-      <div id='subTitle' className='text-md mb-2 font-semibold'>
+      <div id='subTitle' className='mb-2 text-base font-semibold xl:text-xl'>
         <Suspense fallback={<div>Loading...</div>}>{props.subtitle}</Suspense>
       </div>
 
-      <div className='mt-4 text-xs font-semibold '>{tech}</div>
+      <div className='mt-4 text-xs font-semibold xl:text-base'>{tech}</div>
       <div
         id='description'
-        className='right-0 z-0 mt-2 text-balance pl-8 text-lg font-medium md:pl-40'
+        className='right-0 z-0 mt-4 text-balance pl-8 text-lg font-medium leading-relaxed md:pl-40 lg:pl-[50%] xl:text-2xl'
       >
         {props.description}
       </div>
