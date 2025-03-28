@@ -27,7 +27,6 @@
     max-width: fit-content;
   }
   .project-card {
-    position: relative;
     cursor: grab;
     max-width: fit-content;
     transition: transform 0.2s;

@@ -33,7 +33,6 @@
 		display: grid;
 		grid-template-columns: 16rem calc(100vw - 16rem);
 		max-width: 100vw;
-		max-height: 100vh;
 		min-height: calc(100vh - 6rem);
 
 		font-family: "STIX Two Text", serif;
@@ -56,7 +55,6 @@
 	}
 	#canvas {
 		height: 100%;
-		background-color: #F3F3F3;
 		padding-top: 2rem;
 		padding-right: 1.5rem;
 	}
@@ -64,6 +62,7 @@
 		height: 100%;
     outline: 1px solid var(--dark-grey);    
     border: 1px solid var(--white);
+		background-color: #F3F3F3;
 	}
   .canvas-tag {
     position: relative;
