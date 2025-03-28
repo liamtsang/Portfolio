@@ -1,0 +1,13 @@
+:root {
+  --black: #1e1e1e;
+  --dark-grey: #c7c7c7;
+  --light-grey: #f3f3f3;
+  --white: #ffffff;
+}
+
+body {
+  font-family: "STIX Two Text", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  letter-spacing: -0.3rem;
+}
