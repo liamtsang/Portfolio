@@ -1,23 +1,22 @@
 <script>
   import { draggable } from '@neodrag/svelte';
-  let { project, initialAngle, id } = $props()
+  let { project, initialAngle, id, zIndex, moveCardToTop } = $props()
 
-
-  // TODO: Bring the card to the top of the z-index stack
   let test = () => {
-    console.log("test")
+    moveCardToTop(id)
   }
 </script>
 
 <div class="drag-wrapper" use:draggable={{ onDragStart: test }}>
   <div class="project-card">
-    <div class="project-card-tag">Lloydsteven.com</div>
+    <div class="project-card-tag">Lloydsteven.com {zIndex}</div>
     <img src="/{project}.png">
   </div>
 </div>
 
 <style>
   .drag-wrapper {
+    z-index: var(--zIndex);
     position: relative;
     max-width: fit-content;
   }
@@ -29,7 +28,6 @@
     transform: rotateZ(var(--initialAngle));
   }
   .project-card:hover {
-    z-index: 3;
     transform: scale(1.05) rotateZ(var(--initialAngle));
     transform-origin: center;
     transition: transform 0.1s;
