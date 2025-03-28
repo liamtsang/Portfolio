@@ -21,15 +21,13 @@
   }
 </script>
 
-<div class="container">
-  {#each projects as project, index}
-    <ProjectCard 
-      id={project.id}
-      project={project.project} 
-      zIndex={project.zIndex}
-      moveCardToTop={moveCardToTop}
-      --zIndex={project.zIndex}
-      --initialAngle={project.initialAngle}
-    />
-  {/each}
-</div>
+{#each projects as project, index}
+  <ProjectCard 
+    id={project.id}
+    project={project.project} 
+    zIndex={project.zIndex}
+    moveCardToTop={moveCardToTop}
+    --zIndex={project.zIndex}
+    --initialAngle={project.initialAngle}
+  />
+{/each}

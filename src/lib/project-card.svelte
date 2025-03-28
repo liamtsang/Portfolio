@@ -7,7 +7,7 @@
   }
 </script>
 
-<div class="drag-wrapper" use:draggable={{ onDragStart: test }}>
+<div class="drag-wrapper" use:draggable={{ onDragStart: test, bounds: '#canvas' }}>
   <div class="project-card">
     <div class="project-card-tag">Lloydsteven.com {zIndex}</div>
     <img src="/{project}.png">
@@ -17,13 +17,13 @@
 <style>
   .drag-wrapper {
     z-index: var(--zIndex);
-    position: relative;
+    position: absolute;
     max-width: fit-content;
   }
   /* Ideally this z-index waits to initiate until after the transition 0.2s */
   .drag-wrapper:hover {
     z-index: 500;
-    position: relative;
+    position: absolute;
     max-width: fit-content;
   }
   .project-card {
