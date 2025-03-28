@@ -9,7 +9,7 @@
 
 <div class="drag-wrapper" use:draggable={{ onDragStart: test, bounds: '#canvas' }}>
   <div class="project-card">
-    <div class="project-card-tag">Lloydsteven.com {zIndex}</div>
+    <div class="project-card-tag">{project}.com</div>
     <img src="/{project}.png">
   </div>
 </div>

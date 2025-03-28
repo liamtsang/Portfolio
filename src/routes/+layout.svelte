@@ -1,18 +1,13 @@
 <script>
+	import Info from "$lib/info.svelte";
 	let { children } = $props();
 </script>
 
 <main>
-	<section id="info">
-		<img src="/dragon_logo.png">
-		<h1>Liam Tsang</h1>
-		<h2>Design Engineer</h2>
-		<h3 id="email"><a>liamtsang@gmail.com</a></h3>
-		<h3 id="site"><a>liamtsang.com</a></h3>
-	</section>
+	<Info/>
 	<section id="canvas">
 		<div id="canvas-interior">
-			<div class="canvas-tag">WORK</div>
+			<div class="canvas-tag selected-tag">WORK</div>
 			{@render children()}
 		</div>
 	</section>
@@ -47,22 +42,17 @@
 
     margin: 0;
 	}
-	#info {
-		width: calc(100% - 4rem);
-	  background-color: #f5f5f5;
-	  padding-left: 1.5rem;
-	  max-height: 100vh
-	}
 	#canvas {
 		height: 100%;
 		padding-top: 2rem;
-		padding-right: 1.5rem;
+		padding-right: 2rem;
 	}
 	#canvas-interior{
 		height: 100%;
     outline: 1px solid var(--dark-grey);    
     border: 1px solid var(--white);
 		background-color: #F3F3F3;
+		border-radius: 0px .2rem .2rem .2rem;
 	}
   .canvas-tag {
     position: relative;
@@ -86,33 +76,8 @@
     
     transform: translate(-1px, calc(-100% - 2px));
   }
-	img {
-		width: 100%;
-		object-fit: contain;
-		border-radius: 6px;
-	}
-	h1 {
-    font-weight: 500;
-    font-size: calc(1.0rem * 1.5);
-    line-height: normal;
-    margin-top: 1rem;
-    margin-bottom: 0;
-	}
-	h2 {
-    font-weight: 400;
-    font-size: calc(.75rem * 1.5);
-    line-height: 0.5rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0;
-	}
-	h3 {
-    font-weight: 400;
-    font-size: calc(0.75rem * 1.5);
-    margin-bottom: 0;
-    margin-top: 0;
-	}
-	#email{
-		margin-top: 1rem;
-	}
-	
+  .selected-tag {
+  	border-bottom: 1px solid #F3F3F3 !important;
+  	outline-bottom: 1px solid #F3F3F3 !important;
+	}	
 </style>
