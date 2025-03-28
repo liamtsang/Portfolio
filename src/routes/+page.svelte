@@ -9,16 +9,14 @@
 
   // Some sort of effect / state issue where it fires multiple times
   const moveCardToTop = (id) => {
+    console.log("Moving ", id)
     for (let i=0; i<projects.length; i++) {
-      if (projects[i].cardId !== id && projects[i].zIndex !== 0) {
-        console.log("not id")
+      if (projects[i].id === id) {
+        projects[i].zIndex = projects.length
+      } else if (projects[i].id !== id && projects[i].zIndex !== 0) {
         projects[i].zIndex -= 1;
-      } else {
-        console.log("Is id")
-        projects[i].zIndex = projects.length -1
-      }
+      } 
     }
-
     return;
   }
 </script>

@@ -20,6 +20,12 @@
     position: relative;
     max-width: fit-content;
   }
+  /* Ideally this z-index waits to initiate until after the transition 0.2s */
+  .drag-wrapper:hover {
+    z-index: 500;
+    position: relative;
+    max-width: fit-content;
+  }
   .project-card {
     position: relative;
     cursor: grab;
