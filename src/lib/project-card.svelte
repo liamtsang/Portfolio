@@ -1,22 +1,36 @@
 <script>
-  import { onMount } from 'svelte'
+  import { onMount } from "svelte";
   import { draggable } from "@neodrag/svelte";
   import { goto } from "$app/navigation";
-  let { project, id, zIndex, moveCardToTop } = $props();
+  import { page } from "$app/state";
+    import { globalState } from "./globalstate.svelte";
 
-  // This should come from props i think
-  let position = $state({ x: 0, y: 0 });
+  let { project, index, zIndex, moveCardToTop, initialAngle, savedPosition } = $props();
+
+  // let localPosition = $derived(position);
   let cursor = $state("grab");
-  let node = $state(null)
+  let node = $state(null);
+
+  let urlIdParam = $derived(page.params.id);
+  let url = $derived(page.route.id);
+  let blur = $derived(
+    urlIdParam !== project && url === "/work/[id]" ? "3px" : "0px",
+  );
+
+  // $inspect(savedPosition)
+  // $inspect(localPosition)
 
   onMount(() => {
-    node = document.getElementById(`drag-wrapper-${project}`)
-  })
+    node = document.getElementById(`drag-wrapper-${project}`);
+    if (node) {
+      node.style.setProperty("--initialAngle", initialAngle);
+      node.style.setProperty("--scale", "1");
+    }
+  });
 
   const startDrag = () => {
-    // transition = "none"
     cursor = "grabbing";
-    moveCardToTop(id);
+    moveCardToTop(project);
   };
 
   const stopDrag = () => {
@@ -24,12 +38,19 @@
   };
 
   const onclick = () => {
-    if (node) { node.style.setProperty("--transition", "transform 0.2s") }
+    globalState.projects[index].savedPosition = globalState.projects[index].position
+    moveCardToTop(project);
+    if (node) {
+      node.style.setProperty("--transition", "transform 0.2s");
+      node.style.setProperty("--initialAngle", "0deg");
+      node.style.setProperty("--scale", "1.5");
+      node.style.setProperty("pointer-events", "none");
+    }
     goto(`/work/${project}`);
-    position = {x: 50, y: 0}
-    setTimeout(()=> {
-      node.style.setProperty("--transition", "none")
-    }, 200)
+    globalState.projects[index].position = { x: 0, y: 0 };
+    setTimeout(() => {
+      node.style.setProperty("--transition", "none");
+    }, 200);
   };
 </script>
 
@@ -37,10 +58,11 @@
   id="drag-wrapper-{project}"
   class="drag-wrapper"
   use:draggable={{
-    position,
+    position: globalState.projects[index].position,
     onDrag: ({ offsetX, offsetY }) => {
-      position = { x: offsetX, y: offsetY };
+      globalState.projects[index].position = { x: offsetX, y: offsetY };
     },
+    transform: ({ offsetX, offsetY }) => `translate(${offsetX}px, ${offsetY}px)`,
     onDragStart: startDrag,
     onDragEnd: stopDrag,
     bounds: "#canvas",
@@ -50,7 +72,7 @@
   role="button"
   tabindex=""
 >
-  <div class="project-card" style="cursor: {cursor}">
+  <div class="project-card" style="cursor: {cursor}; filter: blur({blur});">
     <div class="project-card-tag">{project}.com</div>
     <img src="/{project}.png" alt={project} />
   </div>
@@ -63,6 +85,7 @@
     max-width: fit-content;
     transition: var(--transition);
     user-select: none;
+    translate: none !important;
   }
   /* Ideally this z-index waits to initiate until after the transition 0.2s */
   .drag-wrapper:hover {
@@ -73,10 +96,10 @@
   .project-card {
     max-width: fit-content;
     transition: transform 0.2s;
-    transform: rotateZ(var(--initialAngle));
+    transform: scale(var(--scale)) rotateZ(var(--initialAngle));
   }
   .project-card:hover {
-    transform: scale(1.05) rotateZ(var(--initialAngle));
+    transform: scale(calc(var(--scale) * 1.05)) rotateZ(var(--initialAngle));
     transform-origin: center;
     transition: transform 0.1s;
     transition-timing-function: ease;
