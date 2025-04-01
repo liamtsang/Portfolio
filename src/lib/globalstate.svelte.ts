@@ -1,7 +1,6 @@
 export const globalState = $state({
 	projects: [
 		{
-			id: "card1",
 			project: "lloydsteven",
 			initialAngle: "-3.62deg",
 			zIndex: 0,
@@ -9,7 +8,6 @@ export const globalState = $state({
 			savedPosition: { x: 0, y: 0 },
 		},
 		{
-			id: "card2",
 			project: "feel",
 			initialAngle: "0deg",
 			zIndex: 1,
@@ -17,7 +15,6 @@ export const globalState = $state({
 			savedPosition: { x: 0, y: 0 },
 		},
 		{
-			id: "card3",
 			project: "topimage",
 			initialAngle: "3deg",
 			zIndex: 2,

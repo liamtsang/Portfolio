@@ -47,7 +47,7 @@
       node.style.setProperty("pointer-events", "none");
     }
     goto(`/work/${project}`);
-    globalState.projects[index].position = { x: 0, y: 0 };
+    globalState.projects[index].position = { x: 0, y: -200 };
     setTimeout(() => {
       node.style.setProperty("--transition", "none");
     }, 200);

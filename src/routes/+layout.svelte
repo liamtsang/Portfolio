@@ -2,6 +2,7 @@
 	import Info from "$lib/info.svelte";
 	import ProjectCard from "$lib/project-card.svelte";
 	import { globalState } from "$lib/globalstate.svelte";
+    import Clock from "$lib/clock.svelte";
 
 	let { data, children } = $props();
 
@@ -27,6 +28,7 @@
 				<div class="canvas-tag selected-tag"><a href="/">WORK</a></div>
 				<div class="canvas-tag"><a href="/about">ABOUT</a></div>
 			</div>
+			<Clock/>
 			<div id="card-container">
 				{#each globalState.projects as project, index}
 					<ProjectCard

@@ -4,7 +4,7 @@
   import { onMount } from 'svelte';
 	import type { PageProps } from './$types';
 	import { globalState, moveCardToTop } from '$lib/globalstate.svelte';
-  import { fly, slide } from 'svelte/transition';
+  import { crossfade, fade, fly, scale, slide } from 'svelte/transition';
   
 	console.log(page.state)
 	console.log(navigating.type)
@@ -51,11 +51,12 @@
   }
 </script>
 
-<div id="shadow-img-wrapper" {onclick}>
+<div id="shadow-img-wrapper" {onclick} onkeydown={onclick} role="dialog" tabindex="0">
 	<div id="inner-shadow-wrapper">
 		<img src="/{project}.png">
-		<article transition:slide>
-			<h1>{data.title}</h1>
+		<article id="article-{project}" transition:fly={{y:350}}>
+			<h1><a href={data.url}>{data.title}</a></h1>
+			<hr/>
 			<p>{data.content}</p>
 		</article>
 	</div>
@@ -74,7 +75,7 @@
 		position: relative;
 		min-width: fit-content;
 		min-height: fit-content;
-		transform: scale(1.5);
+		transform: translateY(-200px) scale(1.5);
 	}
 	img {
 		min-width: 500px;
@@ -83,16 +84,41 @@
 	article {
 		position: absolute;
 		bottom: 0;
-		transform: translateY(150%);
+		transform: translateY(calc(100% + 1.5rem));
+		transition: transform 0.2s;
 		display: flex;
 		flex-direction: column;
 		align-items: baseline;
-		gap: 1rem;
+		gap: 0.2rem;
+		background-color: rgba(30,30,30, 0.95);
+		padding-left: 2rem;
+		padding-right: 2rem;
+		padding-top: 1.5rem;
+		padding-bottom: 1.5rem;
+		border-radius: 1rem;
+		border: 2px solid rgb(82,82,82);
+		outline: 1px solid rgb(146,146,146);
+		backdrop-filter: blur(4px);
+		max-width: 45ch;
 	}
 	h1 {
-		font-size: 3rem;
+		font-size: 1.5rem;
+		text-transform: capitalize;
+	}
+	a {
+		color: var(--white);
+	}
+	hr {
+		border-top: 1px solid rgba(202,202,202,0.4);
+		color: rgba(0,0,0,0);
+		width: 100%;
 	}
 	p {
 		font-size: 1rem;
+		line-height: 1.5rem;
+		font-family: "IBM Plex Sans", sans-serif;
+		font-weight: 400;
+		letter-spacing: -0.03rem;
+		color: rgba(202,202,202,1);
 	}
 </style>
