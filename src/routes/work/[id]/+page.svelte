@@ -55,12 +55,14 @@
 	<div id="inner-shadow-wrapper">
 		<img src="/{project}.png">
 		<article id="article-{project}" transition:fly={{y:350}}>
-			<h1><a href={data.url}>{data.title}</a></h1>
+			<h1><a href={data.url} target="_blank">{data.title}</a></h1>
 			<hr/>
 			<p>{data.content}</p>
 		</article>
 	</div>
 </div>
+
+//TODO: The issue with the shadow image not lining up is the space given for the tag
 
 <style>
 	#shadow-img-wrapper {
@@ -84,12 +86,12 @@
 	article {
 		position: absolute;
 		bottom: 0;
-		transform: translateY(calc(100% + 1.5rem));
+		transform: translateY(calc(100% + 0rem));
 		transition: transform 0.2s;
 		display: flex;
 		flex-direction: column;
 		align-items: baseline;
-		gap: 0.2rem;
+		gap: 0.5rem;
 		background-color: rgba(30,30,30, 0.95);
 		padding-left: 2rem;
 		padding-right: 2rem;
@@ -102,8 +104,10 @@
 		max-width: 45ch;
 	}
 	h1 {
-		font-size: 1.5rem;
+		font-size: 1.2rem;
+		text-underline-offset: 0.1rem;
 		text-transform: capitalize;
+		padding-bottom: 0.1rem;
 	}
 	a {
 		color: var(--white);
@@ -112,10 +116,11 @@
 		border-top: 1px solid rgba(202,202,202,0.4);
 		color: rgba(0,0,0,0);
 		width: 100%;
+		margin: 0;
 	}
 	p {
-		font-size: 1rem;
-		line-height: 1.5rem;
+		font-size: 0.8rem;
+		line-height: 1.2rem;
 		font-family: "IBM Plex Sans", sans-serif;
 		font-weight: 400;
 		letter-spacing: -0.03rem;

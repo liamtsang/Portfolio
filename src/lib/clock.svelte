@@ -39,5 +39,6 @@
     transform: translateY(-100%);
     padding: 8px 0px;
     font-family: monospace;
+    font-size: 0.8rem;
   }
 </style>

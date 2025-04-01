@@ -116,7 +116,7 @@
     outline: 1px solid var(--dark-grey);
     border: 1px solid var(--white);
     box-shadow:
-      0px 4px 4px 0px rgba(55, 55, 85, 0.1),
+      0px 4px 4px 0px rgba(55, 55, 85, 0.25),
       0px 3px 4px 6px rgba(213, 213, 213, 0.15);
     display: block;
     border-radius: 0px 2px 2px 2px;
