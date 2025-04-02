@@ -3,7 +3,7 @@
   import { draggable } from "@neodrag/svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
-    import { globalState } from "./globalstate.svelte";
+  import { globalState } from "./globalstate.svelte";
 
   let { project, index, zIndex, moveCardToTop, initialAngle, savedPosition } = $props();
 

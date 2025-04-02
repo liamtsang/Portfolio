@@ -1,4 +1,20 @@
 <script>
+  import { fade, blur } from "svelte/transition";
 </script>
 
-<p>Hello from about!</p>
+<section transition:blur>
+  <div transition:blur={{ duration: 4000 }}>Hello from about!</div>
+</section>
+
+<style>
+  section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255,255,255,0.5);
+    backdrop-filter: blur(100px);
+    pointer-events: auto;
+  }
+</style>

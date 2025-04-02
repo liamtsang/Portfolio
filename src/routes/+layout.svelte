@@ -24,6 +24,7 @@
 	<Info />
 	<section id="canvas">
 		<div id="canvas-interior">
+			<div id="grid"></div>
 			<div id="canvas-tag-container">
 				<div class="canvas-tag selected-tag"><a href="/">WORK</a></div>
 				<div class="canvas-tag"><a href="/about">ABOUT</a></div>
@@ -77,6 +78,22 @@
 		padding-bottom: 2rem;
 
 		margin: 0;
+	}
+	#grid {
+		border-image-source: url("/grid-border.png");
+		border-image-repeat: round;
+		border-image-slice: 64;
+		border-image-width: 64px;
+		border-image-outset: 64px;
+
+		background-image: url("/grid-bg.png");
+		background-repeat: round;
+		
+		position: absolute;
+		width: calc(90% - 128px);
+		height: calc(90% - 128px);
+
+		opacity: 0.5;
 	}
 	#project-info {
 		position: absolute;

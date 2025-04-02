@@ -36,7 +36,12 @@
     }
   });
 
-  const onclick = () => {
+  const onclick = (event) => {
+	  console.log("event", event)
+	  if (
+	    event.target.id !== 'shadow-img-wrapper' && 
+	    event.target.id !== 'inner-shadow-wrapper'
+	  ) { return }
   	goto("/")
 		if (node) {
       node.style.setProperty("--transition", "transform 0.3s");
@@ -51,7 +56,7 @@
   }
 </script>
 
-<div id="shadow-img-wrapper" {onclick} onkeydown={onclick} role="dialog" tabindex="0">
+<div id="shadow-img-wrapper" onclick={() => onclick(event)} onkeydown={onclick} role="dialog" tabindex="0">
 	<div id="inner-shadow-wrapper">
 		<img src="/{project}.png">
 		<article id="article-{project}" transition:fly={{y:350}}>
@@ -61,8 +66,6 @@
 		</article>
 	</div>
 </div>
-
-//TODO: The issue with the shadow image not lining up is the space given for the tag
 
 <style>
 	#shadow-img-wrapper {
@@ -86,7 +89,7 @@
 	article {
 		position: absolute;
 		bottom: 0;
-		transform: translateY(calc(100% + 0rem));
+		transform: translateY(calc(100% + 2rem));
 		transition: transform 0.2s;
 		display: flex;
 		flex-direction: column;
