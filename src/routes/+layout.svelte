@@ -1,10 +1,14 @@
 <script>
+	import { page } from "$app/state"
 	import Info from "$lib/info.svelte";
 	import ProjectCard from "$lib/project-card.svelte";
 	import { globalState } from "$lib/globalstate.svelte";
-    import Clock from "$lib/clock.svelte";
+  import Clock from "$lib/clock.svelte";
 
 	let { data, children } = $props();
+	let url = $derived(page.route.id)
+
+	$inspect(url)
 
 	const moveCardToTop = (project) => {
 		// console.log("Moving ", id)
@@ -26,8 +30,8 @@
 		<div id="canvas-interior">
 			<div id="grid"></div>
 			<div id="canvas-tag-container">
-				<div class="canvas-tag selected-tag"><a href="/">WORK</a></div>
-				<div class="canvas-tag"><a href="/about">ABOUT</a></div>
+				<div class={`canvas-tag ${url === "/" ? "selected-tag" : ""}`}><a href="/">WORK</a></div>
+				<div class={`canvas-tag ${url === "/about" ? "selected-tag" : ""}`}><a href="/about">ABOUT</a></div>
 			</div>
 			<Clock/>
 			<div id="card-container">
@@ -159,5 +163,10 @@
 	}
 	.selected-tag {
 		border-bottom: 1px solid #f3f3f3 !important;
+	}
+	.selected-tag::after {
+		content: "";
+		width: 200px;
+		background-color: red;
 	}
 </style>

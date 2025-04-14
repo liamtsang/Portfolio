@@ -2,8 +2,10 @@
   import { fade, blur } from "svelte/transition";
 </script>
 
-<section transition:blur>
-  <div transition:blur={{ duration: 4000 }}>Hello from about!</div>
+<section in:blur out:blur>
+  <div in:blur={{ duration: 1000 }} out:fade={{duration: 500}}>
+    
+  </div>
 </section>
 
 <style>
