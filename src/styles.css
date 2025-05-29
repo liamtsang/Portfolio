@@ -303,6 +303,10 @@ table {
   }
 }
 
+html {
+  font-size: calc(0.625 * (1.5rem + 0.25vw));
+}
+
 body {
   background-color: var(--flexoki-dark-bg);
   color: var(--flexoki-dark-tx);
