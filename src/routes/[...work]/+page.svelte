@@ -7,19 +7,7 @@
 	let selectedWork = $state<Work | null>(null);
 	let hoverImg = $state("");
 	let clickedHoverElement = $state<HTMLElement | null>(null);
-
-	// Create array of all images to preload
-	const preloadImageUrls = $derived([
-		...data.works.map(work => work.img),
-		...data.works.flatMap(work => {
-			// Extract hover images from the description HTML
-			const tempDiv = document.createElement('div');
-			tempDiv.innerHTML = work.description;
-			return Array.from(tempDiv.querySelectorAll('.img-hover'))
-				.map(el => (el as HTMLElement).dataset.hoverImg)
-				.filter(Boolean);
-		})
-	]);
+	let preloadImageUrls = $state<string[]>([]);
 
 	const setSelectedProject = (work: Work) => {
 		if (selectedWork?.title === work.title && selectedWork) {
@@ -30,6 +18,19 @@
 	};
 
 	onMount(() => {
+		// Set up preload URLs
+		preloadImageUrls = [
+			...data.works.map(work => work.img),
+			...data.works.flatMap(work => {
+				// Extract hover images from the description HTML
+				const tempDiv = document.createElement('div');
+				tempDiv.innerHTML = work.description;
+				return Array.from(tempDiv.querySelectorAll('.img-hover'))
+					.map(el => (el as HTMLElement).dataset.hoverImg)
+					.filter((url): url is string => typeof url === 'string');
+			})
+		];
+
 		const handleMouseover = (event: MouseEvent) => {
 			const target = event.target as HTMLElement;
 			if (!target.classList.contains("img-hover")) {
@@ -41,7 +42,7 @@
 			}
 			// Don't override click-set hover image with mouseover
 			if (!clickedHoverElement) {
-				hoverImg = target.dataset.hoverImg || "";
+				hoverImg = target.dataset.hoverImg || "";   
 			}
 		};
 
