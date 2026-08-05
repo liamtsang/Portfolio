@@ -14,6 +14,8 @@
 	let slideDir = $state(1);
 	let sliding = $state(false);
 
+	let listEl = $state<HTMLElement | null>(null);
+
 	const setSelectedProject = (work: Work) => {
 		if (selectedWork?.title === work.title && selectedWork) {
 			selectedWork = null;
@@ -27,6 +29,17 @@
 			slideDir = newIndex > oldIndex ? 1 : -1;
 		}
 		selectedWork = work;
+	};
+
+	const navigateBy = (dir: number) => {
+		const currentIndex = selectedWork
+			? data.works.findIndex((w) => w.title === selectedWork?.title)
+			: dir > 0
+				? -1
+				: 0;
+		const nextIndex = currentIndex + dir;
+		if (nextIndex < 0 || nextIndex >= data.works.length) return;
+		setSelectedProject(data.works[nextIndex]);
 	};
 
 	onMount(() => {
@@ -85,12 +98,30 @@
 			}
 		};
 
+		// One scroll "step" moves one item; accumulate small trackpad deltas
+		// and cool down briefly so a single flick doesn't skip several items.
+		let wheelAccum = 0;
+		let wheelCooldownUntil = 0;
+		const handleWheel = (event: WheelEvent) => {
+			event.preventDefault();
+			const now = performance.now();
+			if (now < wheelCooldownUntil) return;
+			wheelAccum += event.deltaY;
+			if (Math.abs(wheelAccum) < 40) return;
+			const dir = wheelAccum > 0 ? 1 : -1;
+			wheelAccum = 0;
+			wheelCooldownUntil = now + 250;
+			navigateBy(dir);
+		};
+
 		window.addEventListener("mouseover", handleMouseover);
 		window.addEventListener("click", handleClick);
+		listEl?.addEventListener("wheel", handleWheel, { passive: false });
 
 		return () => {
 			window.removeEventListener("mouseover", handleMouseover);
 			window.removeEventListener("click", handleClick);
+			listEl?.removeEventListener("wheel", handleWheel);
 		};
 	});
 </script>
@@ -102,7 +133,7 @@
 </svelte:head>
 
 <section>
-	<ul id="work-list">
+	<ul id="work-list" bind:this={listEl}>
 		{#each data.works as work}
 			<li>
 				<span class="work-date">

@@ -183,7 +183,7 @@
 
   .numeral {
     font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 400;
     fill: var(--ink);
   }
