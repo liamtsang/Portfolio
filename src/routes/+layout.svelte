@@ -1,6 +1,7 @@
 <script>
   import "../styles.css";
   import { goto } from "$app/navigation";
+  import Clock from "$lib/Clock.svelte";
   let activatedLink = $state("");
   let { children } = $props();
 
@@ -60,6 +61,11 @@
     </ol>
   </header>
   {@render children()}
+  <footer>
+    <div class="clock-slot">
+      <Clock timezone="America/New_York" />
+    </div>
+  </footer>
 </main>
 
 <svelte:window
@@ -111,5 +117,18 @@
   }
   .activated-link {
     color: var(--flexoki-cyan-300);
+  }
+  footer {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .clock-slot {
+    width: 12rem;
+    /* The face ships near-black; recolor the ink for the dark background. */
+    --clock-ink: var(--flexoki-dark-tx);
   }
 </style>
