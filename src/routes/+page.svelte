@@ -42,7 +42,7 @@
 			}
 			// Don't override click-set hover image with mouseover
 			if (!clickedHoverElement) {
-				hoverImg = target.dataset.hoverImg || "";   
+				hoverImg = target.dataset.hoverImg || "";
 			}
 		};
 
@@ -89,61 +89,7 @@
 	{/each}
 </svelte:head>
 
-<section>
-	<ul id="work-list">
-		{#each data.works as work}
-			<li>
-				<span class="work-date">
-					{work.date}
-				</span>
-				<button
-					class={`work-title ${selectedWork !== null && selectedWork.title === work.title ? "work-selected" : ""}`}
-					onclick={() => setSelectedProject(work)}
-				>
-					{work.title}
-				</button>
-			</li>
-		{/each}
-	</ul>
-	{#if selectedWork}
-		<aside transition:fade={{ duration: 100 }}>
-			<div class="img-container">
-				<img
-					class="article-img"
-					src={selectedWork.img}
-					alt="Screenshot of work"
-				/>
-				{#if hoverImg}
-					<img
-						transition:fade={{ duration: 100 }}
-						class="article-img"
-						src={hoverImg}
-						alt="Screenshot of work"
-					/>
-				{/if}
-			</div>
-			<div id="article-header">
-				{#if selectedWork.url !== ""}
-					<h2>
-						<a href={selectedWork.url} target="_blank"
-							>{selectedWork.articleTitle}</a
-						>
-					</h2>
-				{:else}
-					<h2>{selectedWork.articleTitle}</h2>
-				{/if}
-				<ul id="tag-container">
-					{#each selectedWork.tags as tag}
-						<li>{tag}</li>
-					{/each}
-				</ul>
-			</div>
-			<article>
-				{@html selectedWork.description}
-			</article>
-		</aside>
-	{/if}
-</section>
+
 
 <style>
 	section {
@@ -192,6 +138,11 @@
 	}
 	aside {
 		justify-self: end;
+		display: grid;
+	}
+	.aside-inner {
+		grid-row-start: 1;
+		grid-column-start: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;

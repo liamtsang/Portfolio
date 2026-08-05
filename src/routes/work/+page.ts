@@ -15,6 +15,15 @@ export const load: PageLoad = (): { works: Work[] } => {
 				tags: ["Design", "Frontend", "Backend"],
 			},
 			{
+				date: "2025-2026",
+        url: "https://jussuobjects.com",
+				title: "jussuobjects.com",
+				articleTitle: "Jussu Objects",
+				img: "/imgs/jussu/home.png",
+				description:
+					"A custom Shopify theme touching every page for Jussu Objects. Homepage is a custom Shopify component that turns hyperlinks into a skeumorphic dinner table. Completely customizable by the admin.",
+				tags: ["Frontend"],
+			},			{
 				date: "2024-2025",
 				url: "https://www.topimageservices.com",
 				title: "topimageservices.com",
@@ -45,6 +54,16 @@ export const load: PageLoad = (): { works: Work[] } => {
 				tags: ["Design", "Frontend", "Backend", "Sysadmin"],
 			},
 			{
+				date: "2024-2025",
+				url: "https://tiptopshoes.com",
+				title: "Tip Top Shoes",
+				articleTitle: "Tip Top Shoes",
+				img: "/imgs/tiptop/home.png",
+				description:
+					"Built various internal tools for legacy NYC shoe store Tip Top Shoes. Tools included automatic shoe size conversions using Shopify webhooks, a bulk AI description editor and <span class='img-hover' data-hover-img='/imgs/tiptop/1.png'>a wild retro redesign for their sister store, West NYC (ultimately scrapped)</span>.",
+
+				tags: ["Backend", "Sysadmin"],
+			},			{
 				date: "2024",
 				url: "https://www.lloydsteven.com",
 				title: "lloydsteven.com",

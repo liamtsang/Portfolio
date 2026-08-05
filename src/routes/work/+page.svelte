@@ -1,18 +1,29 @@
 <script lang="ts">
 	import type { PageProps } from "./$types";
-	import { fade, blur, slide } from "svelte/transition";
+	import { fade, blur, slide, scale, fly } from "svelte/transition";
 	import { onMount } from "svelte";
 	import type { Work } from "$lib/types";
+    import { linear, quartIn, quartOut } from "svelte/easing";
 	let { data }: PageProps = $props();
 	let selectedWork = $state<Work | null>(null);
 	let hoverImg = $state("");
 	let clickedHoverElement = $state<HTMLElement | null>(null);
 	let preloadImageUrls = $state<string[]>([]);
 
+	// 1 = moving down the list (slides right), -1 = moving up (slides left)
+	let slideDir = $state(1);
+
 	const setSelectedProject = (work: Work) => {
 		if (selectedWork?.title === work.title && selectedWork) {
 			selectedWork = null;
 			return;
+		}
+		if (selectedWork) {
+			const oldIndex = data.works.findIndex(
+				(w) => w.title === selectedWork?.title,
+			);
+			const newIndex = data.works.findIndex((w) => w.title === work.title);
+			slideDir = newIndex > oldIndex ? 1 : -1;
 		}
 		selectedWork = work;
 	};
@@ -42,7 +53,7 @@
 			}
 			// Don't override click-set hover image with mouseover
 			if (!clickedHoverElement) {
-				hoverImg = target.dataset.hoverImg || "";   
+				hoverImg = target.dataset.hoverImg || "";
 			}
 		};
 
@@ -107,40 +118,48 @@
 	</ul>
 	{#if selectedWork}
 		<aside transition:fade={{ duration: 100 }}>
-			<div class="img-container">
-				<img
-					class="article-img"
-					src={selectedWork.img}
-					alt="Screenshot of work"
-				/>
-				{#if hoverImg}
-					<img
-						transition:fade={{ duration: 100 }}
-						class="article-img"
-						src={hoverImg}
-						alt="Screenshot of work"
-					/>
-				{/if}
-			</div>
-			<div id="article-header">
-				{#if selectedWork.url !== ""}
-					<h2>
-						<a href={selectedWork.url} target="_blank"
-							>{selectedWork.articleTitle}</a
-						>
-					</h2>
-				{:else}
-					<h2>{selectedWork.articleTitle}</h2>
-				{/if}
-				<ul id="tag-container">
-					{#each selectedWork.tags as tag}
-						<li>{tag}</li>
-					{/each}
-				</ul>
-			</div>
-			<article>
-				{@html selectedWork.description}
-			</article>
+			{#key selectedWork.title}
+				<div
+					class="aside-inner"
+					in:fly={{ x: `${-slideDir * 100}%`, duration: 270, opacity: 1, easing: quartOut}}
+					out:fly={{ x: `${slideDir * 100}%`, duration: 270, opacity: 1, easing: quartOut }}
+				>
+					<div class="img-container">
+						<img
+							class="article-img"
+							src={selectedWork.img}
+							alt="Screenshot of work"
+						/>
+						{#if hoverImg}
+							<img
+								transition:fade={{ duration: 100 }}
+								class="article-img"
+								src={hoverImg}
+								alt="Screenshot of work"
+							/>
+						{/if}
+					</div>
+					<div id="article-header">
+						{#if selectedWork.url !== ""}
+							<h2>
+								<a href={selectedWork.url} target="_blank"
+									>{selectedWork.articleTitle}</a
+								>
+							</h2>
+						{:else}
+							<h2>{selectedWork.articleTitle}</h2>
+						{/if}
+						<ul id="tag-container">
+							{#each selectedWork.tags as tag}
+								<li>{tag}</li>
+							{/each}
+						</ul>
+					</div>
+					<article>
+						{@html selectedWork.description}
+					</article>
+				</div>
+			{/key}
 		</aside>
 	{/if}
 </section>
@@ -192,6 +211,12 @@
 	}
 	aside {
 		justify-self: end;
+		display: grid;
+		overflow: hidden;
+	}
+	.aside-inner {
+		grid-row-start: 1;
+		grid-column-start: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
@@ -208,6 +233,7 @@
 		transition: all 0.3s ease-in-out;
 		grid-row-start: 1;
 		grid-column-start: 1;
+		border-radius: 3px;
 	}
 	#article-header {
 		display: flex;

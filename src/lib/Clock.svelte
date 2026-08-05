@@ -133,14 +133,14 @@
     >
   {/each}
 
-  <text
-    class="zone"
-    x={zoneLabel.x}
-    y={zoneLabel.y}
-    text-anchor="middle"
-    dominant-baseline="central">{zone}</text
-  >
-
+  <line
+    class="hand-seconds"
+    x1={pivot.x}
+    y1={pivot.y}
+    x2={secondHand.x}
+    y2={secondHand.y}
+    stroke-linecap="round"
+  />
   <line
     class="hand"
     x1={pivot.x}
@@ -157,14 +157,14 @@
     y2={hourHand.y}
     stroke-linecap="round"
   />
-  <line
-    class="hand-seconds"
-    x1={pivot.x}
-    y1={pivot.y}
-    x2={secondHand.x}
-    y2={secondHand.y}
-    stroke-linecap="round"
-  />
+
+  <text
+    class="zone"
+    x={zoneLabel.x}
+    y={zoneLabel.y}
+    text-anchor="middle"
+    dominant-baseline="central">{zone}</text
+  >
 </svg>
 
 <style>
@@ -194,9 +194,10 @@
     font-weight: 400;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    fill: none;
-    stroke: var(--ink);
-    stroke-width: 0.5;
+    fill: var(--ink);
+    stroke: var(--flexoki-dark-bg);
+    stroke-width: 0.1;
+    z-index: 500;
   }
 
   .hand {

@@ -22,14 +22,14 @@
       >
     </div>
     <div>
-      I interned at startups <a href="https://launchgravity.com/">Gravity</a>
-      and <a href="https://churnzero.com/">Churnzero</a> during college, as well
+      I interned at startups <a href="https://launchgravity.com/" target="_blank">Gravity</a>
+      and <a href="https://churnzero.com/" target="_blank">Churnzero</a> during college, as well
       as working as a server at restaurant
-      <a href="https://www.albidc.com/">Albi</a>.
+      <a href="https://www.albidc.com/" target="_blank">Albi</a>.
     </div>
     <div>
       I taught grade school students web development, Python and game
-      programming through <a href="https://www.codewizardshq.com/"
+      programming through <a href="https://www.codewizardshq.com/" target="_blank"
         >CodeWizards</a
       > after graduation before focusing full time on my freelance work.
     </div>
@@ -37,7 +37,7 @@
   <section>
     <div>
       I am based in <a
-        href="https://www.google.com/maps/place/kensington+brooklyn/data=!4m2!3m1!1s0x89c25b2da71b8663:0x1fa9577069e9292e?sa=X&ved=1t:155783&ictx=111"
+        href="https://www.google.com/maps/place/kensington+brooklyn/data=!4m2!3m1!1s0x89c25b2da71b8663:0x1fa9577069e9292e?sa=X&ved=1t:155783&ictx=111" target="_blank"
         >Kensington, Brooklyn</a
       > and love it.
     </div>
@@ -74,11 +74,11 @@
     gap: 1rem;
   }
   #about-wrapper section div {
-    line-height: 1.2rem;
+    line-height: 1.3;
     text-wrap: balance;
     font-weight: 300;
   }
   a {
-    color: inherit;
+    color: var(--flexoki-cyan-300);
   }
 </style>

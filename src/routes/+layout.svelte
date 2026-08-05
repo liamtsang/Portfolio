@@ -82,6 +82,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-height: 70vh;
   }
   @media (min-width: 0px) {
     main {
