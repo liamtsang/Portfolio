@@ -3,7 +3,7 @@
 	import { fade, blur, slide, scale, fly } from "svelte/transition";
 	import { onMount } from "svelte";
 	import type { Work } from "$lib/types";
-    import { linear, quartIn, quartOut } from "svelte/easing";
+    import { linear, quartIn, quartOut, quartInOut, cubicOut } from "svelte/easing";
 	let { data }: PageProps = $props();
 	let selectedWork = $state<Work | null>(null);
 	let hoverImg = $state("");
@@ -12,6 +12,7 @@
 
 	// 1 = moving down the list (slides right), -1 = moving up (slides left)
 	let slideDir = $state(1);
+	let sliding = $state(false);
 
 	const setSelectedProject = (work: Work) => {
 		if (selectedWork?.title === work.title && selectedWork) {
@@ -117,12 +118,14 @@
 		{/each}
 	</ul>
 	{#if selectedWork}
-		<aside transition:fade={{ duration: 100 }}>
+		<aside transition:fade={{ duration: 50 }} class:sliding>
 			{#key selectedWork.title}
 				<div
 					class="aside-inner"
-					in:fly={{ x: `${-slideDir * 100}%`, duration: 270, opacity: 1, easing: quartOut}}
-					out:fly={{ x: `${slideDir * 100}%`, duration: 270, opacity: 1, easing: quartOut }}
+					in:fly={{ x: `${slideDir * 100}%`, duration: 170, delay: 0, opacity: 0.9, easing: cubicOut}}
+					out:fly={{ x: `${-slideDir * 100}%`, duration: 170, opacity: 0.9, easing: cubicOut }}
+					onoutrostart={() => (sliding = true)}
+					onintroend={() => (sliding = false)}
 				>
 					<div class="img-container">
 						<img
@@ -213,6 +216,21 @@
 		justify-self: end;
 		display: grid;
 		overflow: hidden;
+		padding: 0 4px;
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent,
+			black 6%,
+			black 94%,
+			transparent
+		);
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			black 0.5%,
+			black 99.5%,
+			transparent
+		);
 	}
 	.aside-inner {
 		grid-row-start: 1;
@@ -248,12 +266,16 @@
 	#tag-container li {
 	}
 	article {
-		line-height: 1.3rem;
+		line-height: 1.3;
 		text-wrap: pretty;
 		font-weight: 300;
 	}
+	h2 {
+		font-weight: 500;
+	}
 	a {
 		color: var(--flexoki-dark-tx);
+		/*color: var(--flexoki-cyan-300);*/
 	}
 	:global .img-hover {
 		/* text-decoration: underline; */
