@@ -41,14 +41,6 @@
   // Timezone tag rides above the pivot, so it follows if the pivot moves.
   const zoneLabel = { x: pivot.x, y: pivot.y - 32 };
 
-  // Outline sized to the label so 3- and 4-letter zone codes both fit.
-  const ZONE_CHAR_WIDTH = 9.5;
-  const ZONE_BOX_HEIGHT = 20;
-  const zoneBox = $derived({
-    width: zone.length * ZONE_CHAR_WIDTH + 10,
-    height: ZONE_BOX_HEIGHT,
-  });
-
   /** @param {number} deg */
   const rad = (deg) => (deg * Math.PI) / 180;
 
@@ -141,13 +133,6 @@
     >
   {/each}
 
-  <rect
-    class="zone-box"
-    x={zoneLabel.x - zoneBox.width / 2}
-    y={zoneLabel.y - zoneBox.height / 2}
-    width={zoneBox.width}
-    height={zoneBox.height}
-  />
   <text
     class="zone"
     x={zoneLabel.x}
@@ -203,19 +188,15 @@
     fill: var(--ink);
   }
 
-  .zone-box {
-    fill: none;
-    stroke: var(--ink);
-    stroke-width: 0.75;
-  }
-
   .zone {
     font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    fill: var(--ink);
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 0.5;
   }
 
   .hand {
