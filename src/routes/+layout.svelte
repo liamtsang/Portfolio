@@ -1,6 +1,8 @@
 <script>
   import "../styles.css";
   import { goto } from "$app/navigation";
+  import { page } from "$app/state";
+  import { fade, fly, slide } from "svelte/transition";
   import Clock from "$lib/Clock.svelte";
   let activatedLink = $state("");
   let { children } = $props();
@@ -60,7 +62,17 @@
       </li>
     </ol>
   </header>
-  {@render children()}
+  <div class="page-container">
+    {#key page.url.pathname}
+      <div
+        class="page"
+        in:fade={{ duration: 50 }}
+        out:fade={{  duration: 50 }}
+      >
+        {@render children()}
+      </div>
+    {/key}
+  </div>
   <footer>
     <div class="clock-slot">
       <Clock timezone="America/New_York" />
@@ -97,6 +109,16 @@
       display: inline;
       padding-right: 0.25ch;
     }
+  }
+  .page-container {
+    display: grid;
+    flex: 1;
+    overflow: hidden;
+  }
+  .page {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    min-width: 0;
   }
   header {
     width: 100%;
