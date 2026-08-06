@@ -1,11 +1,34 @@
 <script lang="ts">
 	import type { PageProps } from "./$types";
-	import { fade, blur, slide, scale, fly } from "svelte/transition";
+	import { fade, fly } from "svelte/transition";
+	import { goto } from "$app/navigation";
 	import { onMount, untrack } from "svelte";
 	import type { Work } from "$lib/types";
-    import { linear, quartIn, quartOut, quartInOut, cubicOut } from "svelte/easing";
+	import { cubicOut } from "svelte/easing";
 	let { data }: PageProps = $props();
-	let selectedWork = $state<Work | null>(null);
+
+	// Selection lives in the URL: /work/[slug] selects a project, /work
+	// deselects. `data.selected` is resolved by the load function.
+	const selectedWork = $derived(data.selected);
+	const selectedIndex = $derived(
+		selectedWork
+			? data.works.findIndex((w) => w.slug === selectedWork.slug)
+			: -1,
+	);
+
+	// Clicking the already-selected project deselects it.
+	const workHref = (work: Work) =>
+		selectedWork?.slug === work.slug ? "/work" : `/work/${work.slug}`;
+
+	// Wheel/keyboard stepping replaces the history entry so a momentum
+	// scroll through the list doesn't bury the back button.
+	const stepTo = (work: Work) =>
+		goto(`/work/${work.slug}`, {
+			replaceState: true,
+			noScroll: true,
+			keepFocus: true,
+		});
+
 	let hoverImg = $state("");
 	let clickedHoverElement = $state<HTMLElement | null>(null);
 	let preloadImageUrls = $state<string[]>([]);
@@ -19,11 +42,41 @@
 	let dotTop = $state(0);
 	let dotStretch = $state(1);
 
-	const selectedIndex = $derived(
-		selectedWork
-			? data.works.findIndex((w) => w.title === selectedWork?.title)
-			: -1,
-	);
+	// Wheel delta maps onto a virtual scroll position so a flick with
+	// momentum sweeps the list like a regular page scroll, instead of
+	// stepping one item per cooldown tick.
+	const WHEEL_STEP = 100; // px of wheel delta per item
+	let virtualScroll = 0;
+	let wheelNav = false;
+
+	// Selection changes arrive via navigation (clicks, stepping, and
+	// back/forward alike), so react to them here rather than in the
+	// handlers that initiate them. $effect.pre runs before the DOM
+	// updates, so slideDir is set before the fly transitions read it.
+	let prevIndex = -1;
+	$effect.pre(() => {
+		const idx = selectedIndex;
+		untrack(() => {
+			if (idx !== prevIndex) {
+				// A hover image locked in by clicking a description link
+				// belongs to the outgoing project — drop it so the next
+				// one shows its own image.
+				clickedHoverElement = null;
+				hoverImg = "";
+				if (idx >= 0 && prevIndex >= 0) {
+					slideDir = idx > prevIndex ? 1 : -1;
+				}
+				// Non-wheel navigation re-anchors the virtual scroll; wheel
+				// keeps its fractional progress so momentum isn't quantized
+				// away mid-gesture.
+				if (idx >= 0 && !wheelNav) {
+					virtualScroll = idx * WHEEL_STEP;
+				}
+			}
+			wheelNav = false;
+			prevIndex = idx;
+		});
+	});
 
 	// Animate the dot in JS (same 170ms cubicOut as the aside's fly) so we
 	// can read its per-frame velocity and squash/stretch it accordingly.
@@ -92,34 +145,6 @@
 			dotStretch = 1;
 		}
 	});
-
-	// Wheel delta maps onto a virtual scroll position so a flick with
-	// momentum sweeps the list like a regular page scroll, instead of
-	// stepping one item per cooldown tick.
-	const WHEEL_STEP = 100; // px of wheel delta per item
-	let virtualScroll = 0;
-
-	const setSelectedProject = (work: Work, fromWheel = false) => {
-		// A hover image locked in by clicking a description link belongs to
-		// the outgoing project — drop it so the next one shows its own image.
-		clickedHoverElement = null;
-		hoverImg = "";
-		if (selectedWork?.title === work.title && selectedWork) {
-			selectedWork = null;
-			return;
-		}
-		const newIndex = data.works.findIndex((w) => w.title === work.title);
-		if (selectedWork) {
-			const oldIndex = data.works.findIndex(
-				(w) => w.title === selectedWork?.title,
-			);
-			slideDir = newIndex > oldIndex ? 1 : -1;
-		}
-		// Clicks re-anchor the virtual scroll; wheel keeps its fractional
-		// progress so momentum isn't quantized away mid-gesture.
-		if (!fromWheel) virtualScroll = newIndex * WHEEL_STEP;
-		selectedWork = work;
-	};
 
 	onMount(() => {
 		// Set up preload URLs
@@ -202,19 +227,19 @@
 			event.preventDefault();
 			if (!selectedWork) {
 				// Nothing selected yet: stepping down enters the list at the top.
-				if (dir > 0) setSelectedProject(data.works[0]);
+				if (dir > 0) stepTo(data.works[0]);
 				return;
 			}
 			const next = selectedIndex + dir;
 			if (next < 0 || next >= data.works.length) return;
-			setSelectedProject(data.works[next]);
+			stepTo(data.works[next]);
 		};
 
 		const handleWheel = (event: WheelEvent) => {
 			event.preventDefault();
 			if (!selectedWork) {
 				// Nothing selected yet: scrolling down enters the list at the top.
-				if (event.deltaY > 0) setSelectedProject(data.works[0]);
+				if (event.deltaY > 0) stepTo(data.works[0]);
 				return;
 			}
 			const maxScroll = (data.works.length - 1) * WHEEL_STEP;
@@ -223,7 +248,10 @@
 				Math.min(maxScroll, virtualScroll + event.deltaY),
 			);
 			const idx = Math.round(virtualScroll / WHEEL_STEP);
-			if (idx !== selectedIndex) setSelectedProject(data.works[idx], true);
+			if (idx !== selectedIndex) {
+				wheelNav = true;
+				stepTo(data.works[idx]);
+			}
 		};
 
 		window.addEventListener("mouseover", handleMouseover);
@@ -241,13 +269,23 @@
 </script>
 
 <svelte:head>
+	<title
+		>{selectedWork
+			? `${selectedWork.articleTitle} — Liam Tsang`
+			: "Work — Liam Tsang"}</title
+	>
 	{#each preloadImageUrls as imageUrl}
 		<link rel="preload" as="image" href={imageUrl} />
 	{/each}
 </svelte:head>
 
 <section>
-	<ul id="work-list" bind:this={listEl}>
+	<ul
+		id="work-list"
+		bind:this={listEl}
+		data-sveltekit-noscroll
+		data-sveltekit-keepfocus
+	>
 		{#if selectedWork}
 			<span
 				class="scroll-dot"
@@ -260,18 +298,19 @@
 				<span class="work-date">
 					{work.date}
 				</span>
-				<button
-					class={`work-title ${selectedWork !== null && selectedWork.title === work.title ? "work-selected" : ""}`}
-					onclick={() => setSelectedProject(work)}
+				<a
+					class={`work-title ${selectedWork?.slug === work.slug ? "work-selected" : ""}`}
+					href={workHref(work)}
+					aria-current={selectedWork?.slug === work.slug ? "page" : undefined}
 				>
 					{work.title}
-				</button>
+				</a>
 			</li>
 		{/each}
 	</ul>
 	{#if selectedWork}
 		<aside transition:fade={{ duration: 50 }} class:sliding>
-			{#key selectedWork.title}
+			{#key selectedWork.slug}
 				<div
 					class="aside-img"
 					in:fly={{ x: `${slideDir * 100}%`, duration: 170, delay: 0, opacity: 0.9, easing: cubicOut }}
@@ -371,22 +410,12 @@
 		padding-right: 0.75rem;
 		line-height: normal;
 	}
-	.work-title {
-		text-decoration: underline;
-	}
-	button {
-		border: none;
-		margin: 0;
-		padding: 0;
-		width: auto;
-		overflow: visible;
-		background: transparent;
+	a.work-title {
 		color: inherit;
-		font: inherit;
-		cursor: pointer;
+		text-decoration: underline;
 		line-height: normal;
 	}
-	button:hover {
+	a.work-title:hover {
 		color: var(--flexoki-green-100);
 	}
 	.work-selected {
@@ -471,7 +500,7 @@
 	#tag-container li {
 	}
 	article {
-		line-height: 1.3;
+		line-height: 1.4;
 		text-wrap: pretty;
 		font-weight: 300;
 	}

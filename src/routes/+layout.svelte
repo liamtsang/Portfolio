@@ -65,7 +65,10 @@
     </ol>
   </header>
   <div class="page-container">
-    {#key page.url.pathname}
+    <!-- Key on the route id, not the pathname, so navigating between
+         /work and /work/[slug] doesn't remount the page and clobber the
+         work list's own transitions. -->
+    {#key page.route.id ?? page.url.pathname}
       <div
         class="page"
         in:fade={{ duration: 50 }}
