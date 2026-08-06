@@ -100,6 +100,10 @@
 	let virtualScroll = 0;
 
 	const setSelectedProject = (work: Work, fromWheel = false) => {
+		// A hover image locked in by clicking a description link belongs to
+		// the outgoing project — drop it so the next one shows its own image.
+		clickedHoverElement = null;
+		hoverImg = "";
 		if (selectedWork?.title === work.title && selectedWork) {
 			selectedWork = null;
 			return;

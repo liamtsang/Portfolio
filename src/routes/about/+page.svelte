@@ -65,7 +65,7 @@
   @media (min-width: 576px) {
     #about-wrapper {
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 2rem;
+      gap: 2ch;
     }
   }
   #about-wrapper section {
