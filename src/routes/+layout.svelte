@@ -77,6 +77,7 @@
     <div class="clock-slot">
       <Clock timezone="America/New_York" />
     </div>
+    <img class="micrographic" src="/micrographic.svg" alt="" />
   </footer>
 </main>
 
@@ -113,7 +114,7 @@
   .page-container {
     display: grid;
     flex: 1;
-    overflow: hidden;
+    /*overflow: hidden;*/
   }
   .page {
     grid-row-start: 1;
@@ -142,12 +143,22 @@
     color: var(--flexoki-cyan-300);
   }
   footer {
-    width: 100%;
+    /* Footer is viewport-positioned; this width matches main's content
+       column (max-width 54em minus its 1rem side padding) so the
+       graphic lands on the content's right edge. */
+    width: calc(min(54em, 100vw) - 2rem);
     margin-top: auto;
     padding-top: 3rem;
     padding-bottom: 1rem;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 3rem;
+  }
+  .micrographic {
+    width: 4.5rem;
+    height: auto;
   }
   .clock-slot {
     width: 12rem;

@@ -221,11 +221,10 @@
 		<aside transition:fade={{ duration: 50 }} class:sliding>
 			{#key selectedWork.title}
 				<div
-					class="aside-inner"
-					in:fly={{ x: `${slideDir * 100}%`, duration: 170, delay: 0, opacity: 0.9, easing: cubicOut}}
+					class="aside-img"
+					in:fly={{ x: `${slideDir * 100}%`, duration: 170, delay: 0, opacity: 0.9, easing: cubicOut }}
 					out:fly={{ x: `${-slideDir * 100}%`, duration: 170, opacity: 0.9, easing: cubicOut }}
 					onoutrostart={() => (sliding = true)}
-					onintroend={() => (sliding = false)}
 				>
 					<div class="img-container">
 						<img
@@ -242,6 +241,13 @@
 							/>
 						{/if}
 					</div>
+				</div>
+				<div
+					class="aside-text"
+					in:fade={{ duration: 110, delay: 60, easing: cubicOut }}
+					out:fade={{ duration: 110, delay: 60, easing: cubicOut }}
+					onintroend={() => (sliding = false)}
+				>
 					<div id="article-header">
 						{#if selectedWork.url !== ""}
 							<h2>
@@ -287,7 +293,18 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		column-gap: 2rem;
+		row-gap: 0.5rem;
+		display: grid;
+		grid-template-columns: min-content 1fr;
+		grid-template-rows: repeat(9, 1.5rem);
+	}
+	#work-list > li {
+        display: grid;
+        grid-column: 1/3;
+        grid-template-columns: subgrid;
+        justify-items: baseline;
+        align-content: start;
 	}
 	.scroll-dot {
 		position: absolute;
@@ -300,6 +317,7 @@
 	}
 	.work-date {
 		padding-right: 0.75rem;
+		line-height: normal;
 	}
 	.work-title {
 		text-decoration: underline;
@@ -325,6 +343,8 @@
 	aside {
 		justify-self: end;
 		display: grid;
+		grid-template-rows: auto 1fr;
+		row-gap: 24px;
 		overflow: hidden;
 		padding: 0 4px;
 		-webkit-mask-image: linear-gradient(
@@ -342,12 +362,33 @@
 			transparent
 		);
 	}
-	.aside-inner {
+	/* Old and new copies share the same grid cells so they overlap while
+	   both are in the DOM during the keyed transition. */
+	.aside-img {
 		grid-row-start: 1;
+		grid-column-start: 1;
+		z-index: 3;
+	}
+	.aside-text {
+		grid-row-start: 2;
 		grid-column-start: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		-webkit-mask-image: linear-gradient(
+			to top,
+			transparent,
+			black 6%,
+			black 94%,
+			transparent
+		);
+		mask-image: linear-gradient(
+			to top,
+			transparent,
+			black 0.5%,
+			black 99.5%,
+			transparent
+		);
 	}
 	aside .img-container {
 		max-width: 100%;
