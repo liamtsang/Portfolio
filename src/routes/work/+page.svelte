@@ -15,6 +15,68 @@
 	let sliding = $state(false);
 
 	let listEl = $state<HTMLElement | null>(null);
+	let itemEls = $state<HTMLElement[]>([]);
+	let dotTop = $state(0);
+	let dotStretch = $state(1);
+
+	const selectedIndex = $derived(
+		selectedWork
+			? data.works.findIndex((w) => w.title === selectedWork?.title)
+			: -1,
+	);
+
+	// Animate the dot in JS (same 170ms cubicOut as the aside's fly) so we
+	// can read its per-frame velocity and squash/stretch it accordingly.
+	const DOT_DURATION = 170;
+	const cubicOutEase = (t: number) => 1 - Math.pow(1 - t, 3);
+	let dotRaf = 0;
+	let dotVisible = false;
+
+	const moveDotTo = (target: number) => {
+		cancelAnimationFrame(dotRaf);
+		const from = dotTop;
+		const start = performance.now();
+		let lastPos = from;
+		let lastTime = start;
+		const step = (now: number) => {
+			const t = Math.min(1, (now - start) / DOT_DURATION);
+			dotTop = from + (target - from) * cubicOutEase(t);
+			const dt = Math.max(1, now - lastTime);
+			const velocity = Math.abs(dotTop - lastPos) / dt; // px per ms
+			const targetStretch = 1 + Math.min(velocity * 2, 3);
+			// Snap up to peak stretch instantly, relax back gradually so the
+			// squish stays readable for the whole move instead of one frame.
+			dotStretch =
+				targetStretch > dotStretch
+					? targetStretch
+					: dotStretch + (targetStretch - dotStretch) * 0.15;
+			lastPos = dotTop;
+			lastTime = now;
+			if (t < 1 || dotStretch > 1.01) {
+				dotRaf = requestAnimationFrame(step);
+			} else {
+				dotStretch = 1;
+			}
+		};
+		dotRaf = requestAnimationFrame(step);
+	};
+
+	$effect(() => {
+		const el = selectedIndex >= 0 ? itemEls[selectedIndex] : null;
+		if (el) {
+			const target = el.offsetTop + el.offsetHeight / 2;
+			if (dotVisible) {
+				moveDotTo(target);
+			} else {
+				dotTop = target;
+			}
+			dotVisible = true;
+		} else {
+			dotVisible = false;
+			cancelAnimationFrame(dotRaf);
+			dotStretch = 1;
+		}
+	});
 
 	const setSelectedProject = (work: Work) => {
 		if (selectedWork?.title === work.title && selectedWork) {
@@ -134,8 +196,15 @@
 
 <section>
 	<ul id="work-list" bind:this={listEl}>
-		{#each data.works as work}
-			<li>
+		{#if selectedWork}
+			<span
+				class="scroll-dot"
+				transition:fade={{ duration: 50 }}
+				style="top: {dotTop}px; transform: translateY(-50%) scale({1 / Math.sqrt(dotStretch)}, {dotStretch})"
+			></span>
+		{/if}
+		{#each data.works as work, i}
+			<li bind:this={itemEls[i]}>
 				<span class="work-date">
 					{work.date}
 				</span>
@@ -215,9 +284,19 @@
 		}
 	}
 	#work-list {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+	}
+	.scroll-dot {
+		position: absolute;
+		left: -1rem;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--flexoki-yellow-400);
+		transform: translateY(-50%);
 	}
 	.work-date {
 		padding-right: 0.75rem;
