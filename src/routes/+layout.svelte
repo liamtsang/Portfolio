@@ -155,7 +155,7 @@
     /* Footer is viewport-positioned; this width matches main's content
        column (max-width 54em minus its 1rem side padding) so the
        graphic lands on the content's right edge. */
-    width: calc(min(54em, 100vw) - 2rem);
+    width: calc(min(54em, 100vw) - 0rem);
     margin-top: auto;
     padding-top: 3rem;
     padding-bottom: 1rem;

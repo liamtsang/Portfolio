@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from "./$types";
 	import { fade, blur, slide, scale, fly } from "svelte/transition";
-	import { onMount } from "svelte";
+	import { onMount, untrack } from "svelte";
 	import type { Work } from "$lib/types";
     import { linear, quartIn, quartOut, quartInOut, cubicOut } from "svelte/easing";
 	let { data }: PageProps = $props();
@@ -38,21 +38,31 @@
 		const start = performance.now();
 		let lastPos = from;
 		let lastTime = start;
+		let landed = false;
 		const step = (now: number) => {
 			const t = Math.min(1, (now - start) / DOT_DURATION);
 			dotTop = from + (target - from) * cubicOutEase(t);
 			const dt = Math.max(1, now - lastTime);
-			const velocity = Math.abs(dotTop - lastPos) / dt; // px per ms
-			const targetStretch = 1 + Math.min(velocity * 2, 3);
-			// Snap up to peak stretch instantly, relax back gradually so the
-			// squish stays readable for the whole move instead of one frame.
-			dotStretch =
-				targetStretch > dotStretch
-					? targetStretch
-					: dotStretch + (targetStretch - dotStretch) * 0.15;
+			if (t < 1) {
+				const velocity = Math.abs(dotTop - lastPos) / dt; // px per ms
+				const targetStretch = 1 + Math.min(velocity * 2, 2);
+				// Snap up to peak stretch instantly, relax back gradually so the
+				// squish stays readable for the whole move instead of one frame.
+				dotStretch =
+					targetStretch > dotStretch
+						? targetStretch
+						: dotStretch + (targetStretch - dotStretch) * 0.15;
+			} else if (!landed) {
+				landed = true;
+				// Landing squash: flip whatever stretch is left the other way
+				// (wide and flat), then let it relax back to a circle.
+				dotStretch = Math.max(0.25, 1 / Math.max(dotStretch, 5.2));
+			} else {
+				dotStretch += (1 - dotStretch) * 0.15;
+			}
 			lastPos = dotTop;
 			lastTime = now;
-			if (t < 1 || dotStretch > 1.01) {
+			if (t < 1 || Math.abs(dotStretch - 1) > 0.01) {
 				dotRaf = requestAnimationFrame(step);
 			} else {
 				dotStretch = 1;
@@ -65,11 +75,16 @@
 		const el = selectedIndex >= 0 ? itemEls[selectedIndex] : null;
 		if (el) {
 			const target = el.offsetTop + el.offsetHeight / 2;
-			if (dotVisible) {
-				moveDotTo(target);
-			} else {
-				dotTop = target;
-			}
+			// moveDotTo reads dotTop, so without untrack every animation frame
+			// would re-trigger this effect and restart the tween from t=0 —
+			// the move then never "lands" and the squash never fires.
+			untrack(() => {
+				if (dotVisible) {
+					moveDotTo(target);
+				} else {
+					dotTop = target;
+				}
+			});
 			dotVisible = true;
 		} else {
 			dotVisible = false;
@@ -78,30 +93,28 @@
 		}
 	});
 
-	const setSelectedProject = (work: Work) => {
+	// Wheel delta maps onto a virtual scroll position so a flick with
+	// momentum sweeps the list like a regular page scroll, instead of
+	// stepping one item per cooldown tick.
+	const WHEEL_STEP = 100; // px of wheel delta per item
+	let virtualScroll = 0;
+
+	const setSelectedProject = (work: Work, fromWheel = false) => {
 		if (selectedWork?.title === work.title && selectedWork) {
 			selectedWork = null;
 			return;
 		}
+		const newIndex = data.works.findIndex((w) => w.title === work.title);
 		if (selectedWork) {
 			const oldIndex = data.works.findIndex(
 				(w) => w.title === selectedWork?.title,
 			);
-			const newIndex = data.works.findIndex((w) => w.title === work.title);
 			slideDir = newIndex > oldIndex ? 1 : -1;
 		}
+		// Clicks re-anchor the virtual scroll; wheel keeps its fractional
+		// progress so momentum isn't quantized away mid-gesture.
+		if (!fromWheel) virtualScroll = newIndex * WHEEL_STEP;
 		selectedWork = work;
-	};
-
-	const navigateBy = (dir: number) => {
-		const currentIndex = selectedWork
-			? data.works.findIndex((w) => w.title === selectedWork?.title)
-			: dir > 0
-				? -1
-				: 0;
-		const nextIndex = currentIndex + dir;
-		if (nextIndex < 0 || nextIndex >= data.works.length) return;
-		setSelectedProject(data.works[nextIndex]);
 	};
 
 	onMount(() => {
@@ -160,29 +173,64 @@
 			}
 		};
 
-		// One scroll "step" moves one item; accumulate small trackpad deltas
-		// and cool down briefly so a single flick doesn't skip several items.
-		let wheelAccum = 0;
-		let wheelCooldownUntil = 0;
+		const handleKeydown = (event: KeyboardEvent) => {
+			let dir = 0;
+			switch (event.key) {
+				case "ArrowDown":
+				case "ArrowRight":
+				case "s":
+				case "S":
+				case "d":
+				case "D":
+					dir = 1;
+					break;
+				case "ArrowUp":
+				case "ArrowLeft":
+				case "w":
+				case "W":
+				case "a":
+				case "A":
+					dir = -1;
+					break;
+				default:
+					return;
+			}
+			event.preventDefault();
+			if (!selectedWork) {
+				// Nothing selected yet: stepping down enters the list at the top.
+				if (dir > 0) setSelectedProject(data.works[0]);
+				return;
+			}
+			const next = selectedIndex + dir;
+			if (next < 0 || next >= data.works.length) return;
+			setSelectedProject(data.works[next]);
+		};
+
 		const handleWheel = (event: WheelEvent) => {
 			event.preventDefault();
-			const now = performance.now();
-			if (now < wheelCooldownUntil) return;
-			wheelAccum += event.deltaY;
-			if (Math.abs(wheelAccum) < 40) return;
-			const dir = wheelAccum > 0 ? 1 : -1;
-			wheelAccum = 0;
-			wheelCooldownUntil = now + 250;
-			navigateBy(dir);
+			if (!selectedWork) {
+				// Nothing selected yet: scrolling down enters the list at the top.
+				if (event.deltaY > 0) setSelectedProject(data.works[0]);
+				return;
+			}
+			const maxScroll = (data.works.length - 1) * WHEEL_STEP;
+			virtualScroll = Math.max(
+				0,
+				Math.min(maxScroll, virtualScroll + event.deltaY),
+			);
+			const idx = Math.round(virtualScroll / WHEEL_STEP);
+			if (idx !== selectedIndex) setSelectedProject(data.works[idx], true);
 		};
 
 		window.addEventListener("mouseover", handleMouseover);
 		window.addEventListener("click", handleClick);
+		window.addEventListener("keydown", handleKeydown);
 		listEl?.addEventListener("wheel", handleWheel, { passive: false });
 
 		return () => {
 			window.removeEventListener("mouseover", handleMouseover);
 			window.removeEventListener("click", handleClick);
+			window.removeEventListener("keydown", handleKeydown);
 			listEl?.removeEventListener("wheel", handleWheel);
 		};
 	});
@@ -200,7 +248,7 @@
 			<span
 				class="scroll-dot"
 				transition:fade={{ duration: 50 }}
-				style="top: {dotTop}px; transform: translateY(-50%) scale({1 / Math.sqrt(dotStretch)}, {dotStretch})"
+				style="top: {dotTop}px; transform: translateY(-100%) scale({1 / Math.sqrt(dotStretch)}, {dotStretch})"
 			></span>
 		{/if}
 		{#each data.works as work, i}
@@ -312,7 +360,7 @@
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
-		background: var(--flexoki-yellow-400);
+		background: var(--flexoki-green-400);
 		transform: translateY(-50%);
 	}
 	.work-date {
@@ -335,10 +383,10 @@
 		line-height: normal;
 	}
 	button:hover {
-		color: var(--flexoki-yellow-100);
+		color: var(--flexoki-green-100);
 	}
 	.work-selected {
-		color: var(--flexoki-yellow-400) !important;
+		color: var(--flexoki-green-400) !important;
 	}
 	aside {
 		justify-self: end;
@@ -346,7 +394,7 @@
 		grid-template-rows: auto 1fr;
 		row-gap: 24px;
 		overflow: hidden;
-		padding: 0 4px;
+		/*padding: 0 4px;
 		-webkit-mask-image: linear-gradient(
 			to right,
 			transparent,
@@ -360,7 +408,7 @@
 			black 0.5%,
 			black 99.5%,
 			transparent
-		);
+		);*/
 	}
 	/* Old and new copies share the same grid cells so they overlap while
 	   both are in the DOM during the keyed transition. */
@@ -407,12 +455,14 @@
 	#article-header {
 		display: flex;
 		justify-content: space-between;
+		align-items: baseline;
 	}
 	#tag-container {
 		display: flex;
 		gap: 0.5rem;
 		color: var(--flexoki-dark-tx-2);
 		font-weight: 300;
+		font-size: 0.8rem;
 	}
 	#tag-container li {
 	}
@@ -431,10 +481,10 @@
 	:global .img-hover {
 		/* text-decoration: underline; */
 		cursor: pointer;
-		color: var(--flexoki-yellow-300);
+		color: var(--flexoki-green-300);
 	}
 	:global .img-hover:hover {
-		color: var(--flexoki-yellow-100);
+		color: var(--flexoki-green-100);
 	}
 	/*
 	:global .img-hover::after {

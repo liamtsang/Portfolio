@@ -49,17 +49,18 @@
     width: 100%;
     aspect-ratio: 131 / 238;
     /* Depth step between adjacent layers. */
-    --depth: 62px;
+    --depth: 22px;
     transform-style: preserve-3d;
     transition: transform 0.5s;
   }
 
   .iso:hover {
-    transform: rotateX(33deg) rotateY(45deg);
+    transform: rotateX(33deg) rotateY(-45deg);
+    /*transform: rotateX(33deg) rotateY(45deg) skew(-33deg) rotateZ(-33deg) scaleY(120%)*/
   }
 
   .iso:hover > .layer {
-    border-color: var(--flexoki-base-500);
+    /*border-color: var(--flexoki-base-850);*/
   }
 
   .layer {

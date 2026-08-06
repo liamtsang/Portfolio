@@ -130,7 +130,8 @@
   }
 
   .iso:hover {
-    transform: rotateX(33deg) rotateY(45deg);
+    transform: rotateX(33deg) rotateY(-45deg);
+    /*transform: rotateX(33deg) rotateY(45deg) skew(-33deg) rotateZ(-33deg) scaleY(120%)*/
   }
 
   .layer {

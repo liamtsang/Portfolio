@@ -37,6 +37,8 @@
   const MINUTE_LENGTH = 62;
   const HOUR_LENGTH = 40;
   const SECOND_LENGTH = 72;
+  // Counterweight tail past the pivot, opposite the seconds tip.
+  const SECOND_TAIL = 16;
 
   // Timezone tag rides above the pivot, so it follows if the pivot moves.
   const zoneLabel = { x: pivot.x, y: pivot.y - 32 };
@@ -84,6 +86,10 @@
     x: pivot.x + SECOND_LENGTH * Math.cos(rad(secondAngle)),
     y: pivot.y + SECOND_LENGTH * Math.sin(rad(secondAngle)),
   });
+  const secondTail = $derived({
+    x: pivot.x - SECOND_TAIL * Math.cos(rad(secondAngle)),
+    y: pivot.y - SECOND_TAIL * Math.sin(rad(secondAngle)),
+  });
 
   /** @type {Record<string, string>} */
   const ZONE_NAMES = {
@@ -117,8 +123,8 @@
   >
     <line
       class="hand-seconds"
-      x1={pivot.x}
-      y1={pivot.y}
+      x1={secondTail.x}
+      y1={secondTail.y}
       x2={secondHand.x}
       y2={secondHand.y}
       stroke-linecap="round"
@@ -139,6 +145,7 @@
       y2={hourHand.y}
       stroke-linecap="round"
     />
+    <circle class="hand-cap" cx={pivot.x} cy={pivot.y} r="3" />
   </svg>
   <div class="plane mid"></div>
   <svg
@@ -275,7 +282,13 @@
   .hand {
     stroke: var(--ink);
     stroke-width: 1.5;
+    stroke-linecap: round;
     fill: none;
+  }
+
+  .hand-cap {
+    fill: var(--flexoki-red-500);
+    stroke: none;
   }
 
   .hand-seconds {

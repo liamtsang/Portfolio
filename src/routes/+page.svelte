@@ -117,6 +117,7 @@
 	}
 	.work-title {
 		text-decoration: underline;
+		transition: color 0.12s;
 	}
 	button {
 		border: none;
@@ -169,6 +170,7 @@
 		gap: 0.5rem;
 		color: var(--flexoki-dark-tx-2);
 		font-weight: 300;
+		font-size: 0.8rem;
 	}
 	#tag-container li {
 	}
