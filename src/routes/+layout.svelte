@@ -4,6 +4,7 @@
   import { page } from "$app/state";
   import { fade, fly, slide } from "svelte/transition";
   import Clock from "$lib/Clock.svelte";
+  import Micrographic from "$lib/Micrographic.svelte";
   let activatedLink = $state("");
   let { children } = $props();
 
@@ -77,7 +78,9 @@
     <div class="clock-slot">
       <Clock timezone="America/New_York" />
     </div>
-    <img class="micrographic" src="/micrographic.svg" alt="" />
+    <div class="micrographic">
+      <Micrographic />
+    </div>
   </footer>
 </main>
 
@@ -158,7 +161,6 @@
   }
   .micrographic {
     width: 4.5rem;
-    height: auto;
   }
   .clock-slot {
     width: 12rem;
