@@ -49,7 +49,7 @@
     width: 100%;
     aspect-ratio: 131 / 238;
     /* Depth step between adjacent layers. */
-    --depth: 22px;
+    --depth: 62px;
     transform-style: preserve-3d;
     transition: transform 0.5s;
   }

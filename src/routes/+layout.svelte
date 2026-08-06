@@ -5,6 +5,7 @@
   import { fade, fly, slide } from "svelte/transition";
   import Clock from "$lib/Clock.svelte";
   import Micrographic from "$lib/Micrographic.svelte";
+  import Micrographic2 from "$lib/Micrographic2.svelte";
   let activatedLink = $state("");
   let { children } = $props();
 
@@ -78,8 +79,13 @@
     <div class="clock-slot">
       <Clock timezone="America/New_York" />
     </div>
-    <div class="micrographic">
-      <Micrographic />
+    <div class="graphics">
+      <div class="micrographic2">
+        <Micrographic2 />
+      </div>
+      <div class="micrographic">
+        <Micrographic />
+      </div>
     </div>
   </footer>
 </main>
@@ -159,8 +165,18 @@
     position: absolute;
     bottom: 3rem;
   }
+  .graphics {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
   .micrographic {
     width: 4.5rem;
+  }
+  .micrographic2 {
+    /* Same visual height as the 4.5rem-wide portrait graphic
+       (238/131 aspect vs 152/174). */
+    width: 5rem;
   }
   .clock-slot {
     width: 12rem;

@@ -79,6 +79,6 @@
     font-weight: 300;
   }
   a {
-    color: var(--flexoki-cyan-300);
+    color: var(--flexoki-text-link);
   }
 </style>
