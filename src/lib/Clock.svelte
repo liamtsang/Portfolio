@@ -106,7 +106,42 @@
   );
 </script>
 
-<svg
+<div class="iso">
+  <div class="plane back"></div>
+  <svg
+    class="hands"
+    viewBox="0 0 240 240"
+    preserveAspectRatio="xMidYMid meet"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <line
+      class="hand-seconds"
+      x1={pivot.x}
+      y1={pivot.y}
+      x2={secondHand.x}
+      y2={secondHand.y}
+      stroke-linecap="round"
+    />
+    <line
+      class="hand"
+      x1={pivot.x}
+      y1={pivot.y}
+      x2={minuteHand.x}
+      y2={minuteHand.y}
+      stroke-linecap="round"
+    />
+    <line
+      class="hand"
+      x1={pivot.x}
+      y1={pivot.y}
+      x2={hourHand.x}
+      y2={hourHand.y}
+      stroke-linecap="round"
+    />
+  </svg>
+  <div class="plane mid"></div>
+  <svg
   class="clock"
   viewBox="0 0 240 240"
   width="100%"
@@ -116,47 +151,11 @@
 >
   <title>{title}</title>
 
-  {#each diamonds as d}
-    <rect
-      class="diamond"
-      x={d.cx - d.size / 2}
-      y={d.cy - d.size / 2}
-      width={d.size}
-      height={d.size}
-      transform="rotate(45, {d.cx}, {d.cy})"
-    />
-  {/each}
-
   {#each numerals as { n, x, y }}
     <text class="numeral" {x} {y} text-anchor="middle" dominant-baseline="central"
       >{n}</text
     >
   {/each}
-
-  <line
-    class="hand-seconds"
-    x1={pivot.x}
-    y1={pivot.y}
-    x2={secondHand.x}
-    y2={secondHand.y}
-    stroke-linecap="round"
-  />
-  <line
-    class="hand"
-    x1={pivot.x}
-    y1={pivot.y}
-    x2={minuteHand.x}
-    y2={minuteHand.y}
-    stroke-linecap="round"
-  />
-  <line
-    class="hand"
-    x1={pivot.x}
-    y1={pivot.y}
-    x2={hourHand.x}
-    y2={hourHand.y}
-    stroke-linecap="round"
-  />
 
   <text
     class="zone"
@@ -166,14 +165,87 @@
     dominant-baseline="central">{zone}</text
   >
 </svg>
+  <svg
+    class="diamonds"
+    viewBox="0 0 240 240"
+    preserveAspectRatio="xMidYMid meet"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {#each diamonds as d}
+      <rect
+        class="diamond"
+        x={d.cx - d.size / 2}
+        y={d.cy - d.size / 2}
+        width={d.size}
+        height={d.size}
+        transform="rotate(45, {d.cx}, {d.cy})"
+      />
+    {/each}
+  </svg>
+  <div class="plane front"></div>
+</div>
 
 <style>
-  .clock {
-    display: block;
+  .iso {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
     /* Single ink color for the whole face. Override --clock-ink from a parent
        to sit the face on a dark background. */
     --ink: var(--clock-ink, #14142b);
-    pointer-events: none;
+    /* Depth between each plane and the clock face, as a whole cube. */
+    --depth: 104px;
+    /* No perspective on purpose: orthographic projection = true isometric. */
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+  }
+
+  .iso:hover {
+      transform: rotatex(33deg) rotatey(45deg);
+  }
+
+  .iso:hover > .plane{
+    border-color: var(--flexoki-base-500);
+  }
+
+  .plane {
+    position: absolute;
+    inset: 4%;
+    border: 1.5px dashed;
+    border-color: transparent;
+    transition: border-color 0.5s;
+  }
+
+  .plane.back {
+    transform: translateZ(calc(var(--depth) * -1));
+  }
+
+  .plane.front {
+    transform: translateZ(var(--depth));
+  }
+
+  .plane.mid{
+    transform: translateZ(0);
+  }
+
+  .clock {
+    display: block;
+    transform: translateZ(0);
+  }
+
+  /* Hands live in their own svg so the 3D offset applies — transforms inside
+     an svg are flattened, so translateZ on the lines themselves does nothing. */
+  .hands {
+    position: absolute;
+    inset: 0;
+    transform: translateZ(calc(var(--depth) * -1));
+  }
+
+  .diamonds {
+    position: absolute;
+    inset: 0;
+    transform: translateZ(var(--depth));
   }
 
   .diamond {
