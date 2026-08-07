@@ -4,8 +4,6 @@
   import { page } from "$app/state";
   import { fade, fly, slide } from "svelte/transition";
   import Clock from "$lib/Clock.svelte";
-  import Micrographic from "$lib/Micrographic.svelte";
-  import Micrographic2 from "$lib/Micrographic2.svelte";
   let activatedLink = $state("");
   let { children } = $props();
 
@@ -78,19 +76,13 @@
       </div>
     {/key}
   </div>
-  <footer>
-    <div class="clock-slot">
-      <Clock timezone="America/New_York" />
-    </div>
-    <div class="graphics">
-      <div class="micrographic2">
-        <Micrographic2 />
+  {#if !page.url.pathname.startsWith("/blog")}
+    <footer>
+      <div class="clock-slot">
+        <Clock timezone="America/New_York" />
       </div>
-      <div class="micrographic">
-        <Micrographic />
-      </div>
-    </div>
-  </footer>
+    </footer>
+  {/if}
 </main>
 
 <svelte:window
@@ -155,31 +147,32 @@
     color: var(--flexoki-cyan-300);
   }
   footer {
-    /* Footer is viewport-positioned; this width matches main's content
-       column (max-width 54em minus its 1rem side padding) so the
-       graphic lands on the content's right edge. */
-    width: calc(min(54em, 100vw) - 0rem);
+    width: 100%;
     margin-top: auto;
     padding-top: 3rem;
     padding-bottom: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    position: absolute;
-    bottom: 3rem;
   }
-  .graphics {
-    display: flex;
-    align-items: flex-end;
-    gap: 1.5rem;
-  }
-  .micrographic {
-    width: 4.5rem;
-  }
-  .micrographic2 {
-    /* Same visual height as the 4.5rem-wide portrait graphic
-       (238/131 aspect vs 152/174). */
-    width: 5rem;
+  @media (min-width: 576px) {
+    footer {
+      /* Pinned to the spot the flowed footer lands on at main's 70vh
+         min-height (bottom edge at 70vh + 1rem top padding), so it sits
+         in the same place on every page regardless of content height.
+         Width matches main's content column (54em minus 1rem side
+         padding each) since absolute width no longer tracks main. */
+      position: absolute;
+      /* Clamped so the clock's top edge never rises into the page text on
+         short viewports: its bottom edge stays at least 34rem from the
+         document top (~20rem of header + content, ~13rem of clock +
+         footer padding, plus breathing room). When the viewport is too
+         short for that, the footer drops below the fold and the page
+         scrolls instead of overlapping. */
+      bottom: min(calc(30vh - 1rem), calc(100vh - 38rem));
+      width: fit-content;
+      padding-top: 0;
+    }
   }
   .clock-slot {
     width: 12rem;

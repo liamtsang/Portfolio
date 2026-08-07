@@ -202,7 +202,7 @@
        to sit the face on a dark background. */
     --ink: var(--clock-ink, #14142b);
     /* Depth between each plane and the clock face, as a whole cube. */
-    --depth: 104px;
+    --depth: 5.5rem;
     /* No perspective on purpose: orthographic projection = true isometric. */
     transform-style: preserve-3d;
     transition: transform 0.5s;
@@ -213,7 +213,7 @@
   }
 
   .iso:hover > .plane{
-    border-color: var(--flexoki-base-500);
+    border-color: rgba(255,255,255,0.25);
   }
 
   .plane {

@@ -15,9 +15,12 @@
   </section>
   <section>
     <div>
+        Currently working under NDA to bring a web application to market.
+    </div>
+    <div>
       In 2024 I graduated from the NYU Tandon School of Engineering with a major
       in <a
-        href="https://engineering.nyu.edu/academics/programs/integrated-design-media-bs"
+        href="https://engineering.nyu.edu/academics/programs/integrated-design-media-bs" target="_blank"
         >Integrated Design & Media.</a
       >
     </div>
@@ -33,21 +36,11 @@
         >CodeWizards</a
       > after graduation before focusing full time on my freelance work.
     </div>
-  </section>
-  <section>
     <div>
-      I am based in <a
+      I am based in the lovely neighborhood of <a
         href="https://www.google.com/maps/place/kensington+brooklyn/data=!4m2!3m1!1s0x89c25b2da71b8663:0x1fa9577069e9292e?sa=X&ved=1t:155783&ictx=111" target="_blank"
         >Kensington, Brooklyn</a
-      > and love it.
-    </div>
-    <div>
-      I love hard dance music, minimal/experimental techno and ambient music. I
-      love cooking stir fries and deep frying at home.
-    </div>
-    <div>
-      I played Ultimate Frisbee at a competitive level from high school through
-      college. I am currently trying to get better at basketball.
+      >.
     </div>
   </section>
 </section>
@@ -64,8 +57,8 @@
   }
   @media (min-width: 576px) {
     #about-wrapper {
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 2ch;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
     }
   }
   #about-wrapper section {
@@ -74,8 +67,7 @@
     gap: 1rem;
   }
   #about-wrapper section div {
-    line-height: 1.3;
-    text-wrap: balance;
+    line-height: 1.4;
     font-weight: 300;
   }
   a {

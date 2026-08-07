@@ -40,6 +40,7 @@
 	let listEl = $state<HTMLElement | null>(null);
 	let itemEls = $state<HTMLElement[]>([]);
 	let dotTop = $state(0);
+	let dotLeft = $state(0);
 	let dotStretch = $state(1);
 
 	// Wheel delta maps onto a virtual scroll position so a flick with
@@ -109,7 +110,7 @@
 				landed = true;
 				// Landing squash: flip whatever stretch is left the other way
 				// (wide and flat), then let it relax back to a circle.
-				dotStretch = Math.max(0.25, 1 / Math.max(dotStretch, 5.2));
+				dotStretch = Math.max(1, 1 / Math.max(dotStretch, 1.1));
 			} else {
 				dotStretch += (1 - dotStretch) * 0.15;
 			}
@@ -128,6 +129,10 @@
 		const el = selectedIndex >= 0 ? itemEls[selectedIndex] : null;
 		if (el) {
 			const target = el.offsetTop + el.offsetHeight / 2;
+			// Sit just left of the title text, centered in the gap between
+			// date and title, tracking any date-width differences.
+			const titleEl = el.querySelector<HTMLElement>(".work-title");
+			if (titleEl) dotLeft = titleEl.offsetLeft - 12;
 			// moveDotTo reads dotTop, so without untrack every animation frame
 			// would re-trigger this effect and restart the tween from t=0 —
 			// the move then never "lands" and the squash never fires.
@@ -290,7 +295,7 @@
 			<span
 				class="scroll-dot"
 				transition:fade={{ duration: 50 }}
-				style="top: {dotTop}px; transform: translateY(-100%) scale({1 / Math.sqrt(dotStretch)}, {dotStretch})"
+				style="top: {dotTop}px; left: {dotLeft}px; transform: translateY(-100%) scale({1 / Math.sqrt(dotStretch)}, {dotStretch})"
 			></span>
 		{/if}
 		{#each data.works as work, i}
@@ -342,8 +347,8 @@
 					<div id="article-header">
 						{#if selectedWork.url !== ""}
 							<h2>
-								<a href={selectedWork.url} target="_blank"
-									>{selectedWork.articleTitle}</a
+								<a class="header-title" href={selectedWork.url} target="_blank"
+									>{selectedWork.articleTitle} ↗</a
 								>
 							</h2>
 						{:else}
@@ -399,9 +404,8 @@
 	}
 	.scroll-dot {
 		position: absolute;
-		left: -1rem;
-		width: 6px;
-		height: 6px;
+		width: 5px;
+		height: 5px;
 		border-radius: 50%;
 		background: var(--flexoki-green-400);
 		transform: translateY(-50%);
@@ -412,7 +416,7 @@
 	}
 	a.work-title {
 		color: inherit;
-		text-decoration: underline;
+		text-decoration: none;
 		line-height: normal;
 	}
 	a.work-title:hover {
@@ -489,6 +493,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
+	}
+	a.header-title {
+		color: inherit;
+		text-decoration: none;
+		line-height: normal;
+	}
+	a.header-title:hover {
+		color: var(--flexoki-text-link);
 	}
 	#tag-container {
 		display: flex;

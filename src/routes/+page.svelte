@@ -169,8 +169,7 @@
 		display: flex;
 		gap: 0.5rem;
 		color: var(--flexoki-dark-tx-2);
-		font-weight: 300;
-		font-size: 0.8rem;
+		font-weight: 500;
 	}
 	#tag-container li {
 	}

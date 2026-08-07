@@ -5,11 +5,11 @@ export const works: Work[] = [
 		slug: "metis",
 		date: "Current",
 		url: "",
-		title: "Metis (NDA)",
+		title: "Metis",
 		articleTitle: "Metis",
 		img: "/imgs/metis/home.png",
 		description:
-			"A complete UX and UI overhaul for a web app that is a combination of TurboTax and inventory software. Some of my favorite work, you will have to trust me that it looks great.",
+			"A complete UX and UI overhaul for a web app that is a combination of TurboTax and inventory software.",
 		tags: ["Design", "Frontend", "Backend"],
 	},
 	{
