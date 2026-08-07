@@ -19,6 +19,9 @@ const config = {
 			fallback: undefined,
 			precompress: false,
 			strict: true,
+			// adapter-vercel can't infer a runtime when building under
+			// Node 24 locally, so pin the deploy runtime explicitly.
+			runtime: "nodejs22.x",
 		}),
 	},
 };

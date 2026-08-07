@@ -3,7 +3,12 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
   import { fade, fly, slide } from "svelte/transition";
+  import { injectAnalytics } from "@vercel/analytics/sveltekit";
+  import { injectSpeedInsights } from "@vercel/speed-insights/sveltekit";
   import Clock from "$lib/Clock.svelte";
+
+  injectAnalytics();
+  injectSpeedInsights();
   let activatedLink = $state("");
   let { children } = $props();
 
