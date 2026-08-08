@@ -11,7 +11,7 @@
       title="Infinite canvas with vector embeddings"
   >
     <div class="picture">
-      <img src="/imgs/blog/canvas.png" alt="Inspiration canvas"/>
+      <img src="/imgs/blog/canvas.webp" alt="Inspiration canvas"/>
     </div>
   </ComponentPost>
 
