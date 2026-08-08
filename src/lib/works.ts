@@ -44,6 +44,17 @@ export const works: Work[] = [
 		description:
 			"Full web presence delivery for a pediatric dental practice. Website has an eye-catching, friendly design with <span class='img-hover' data-hover-img='/imgs/molar-and-friends/1.png'>clear CTAs</span>. Set up many behind-the-scenes necessities like Google Analytics, custom email, SEO etc.",
 		tags: ["Design", "Frontend", "Sysadmin"],
+  },
+  {
+		slug: "cmf",
+		date: "2025",
+		url: "",
+		title: "CMF",
+		articleTitle: "CMF",
+		img: "/imgs/cmf/home.png",
+		description:
+			"Web app design & development for an internal project management tool. A difficult project that required lots of cooperation and flexibility with the firm's strict rules and firewalls.",
+		tags: ["Design", "Frontend", "Sysadmin"],
 	},
 	{
 		slug: "active-chapter",

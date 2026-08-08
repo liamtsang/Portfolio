@@ -84,7 +84,10 @@
 	const DOT_DURATION = 170;
 	const cubicOutEase = (t: number) => 1 - Math.pow(1 - t, 3);
 	let dotRaf = 0;
-	let dotVisible = false;
+	// $state because the template also gates on it: the dot must not render
+	// until the effect below has measured its position — SSR would otherwise
+	// paint it at top/left 0 and it would flash there before hydration.
+	let dotVisible = $state(false);
 
 	const moveDotTo = (target: number) => {
 		cancelAnimationFrame(dotRaf);
@@ -110,7 +113,12 @@
 				landed = true;
 				// Landing squash: flip whatever stretch is left the other way
 				// (wide and flat), then let it relax back to a circle.
-				dotStretch = Math.max(1, 1 / Math.max(dotStretch, 1.1));
+				// MIN_IMPACT (>1) guarantees a visible plop even on slow
+				// landings; MAX_SQUASH (<1) is the flattest it can get —
+				// at 1 or above the squash cancels out entirely.
+				const MIN_IMPACT = 1.6;
+				const MAX_SQUASH = 0.5;
+				dotStretch = Math.max(MAX_SQUASH, 1 / Math.max(dotStretch, MIN_IMPACT));
 			} else {
 				dotStretch += (1 - dotStretch) * 0.15;
 			}
@@ -291,7 +299,7 @@
 		data-sveltekit-noscroll
 		data-sveltekit-keepfocus
 	>
-		{#if selectedWork}
+		{#if selectedWork && dotVisible}
 			<span
 				class="scroll-dot"
 				transition:fade={{ duration: 50 }}
