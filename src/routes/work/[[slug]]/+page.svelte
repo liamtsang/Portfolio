@@ -421,6 +421,7 @@
 	.work-date {
 		padding-right: 0.75rem;
 		line-height: normal;
+		white-space: nowrap;
 	}
 	a.work-title {
 		color: inherit;
