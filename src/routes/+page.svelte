@@ -97,7 +97,7 @@
 	}
 	@media (min-width: 0px) {
 		section {
-			grid-template-rows: auto 1fr;
+			grid-template-rows: max-content 1fr;
 			gap: 2rem;
 		}
 	}

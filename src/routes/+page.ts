@@ -1,6 +1,5 @@
-import type { PageLoad } from "./$types";
-import { works } from "$lib/works";
+import { redirect } from "@sveltejs/kit";
 
-export const load: PageLoad = () => {
-	return { works };
+export const load = () => {
+	redirect(307, "/work");
 };
