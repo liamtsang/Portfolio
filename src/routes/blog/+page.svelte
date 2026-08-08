@@ -7,6 +7,14 @@
 </script>
 
 <section>
+  <ComponentPost
+      title="Infinite canvas with vector embeddings"
+  >
+    <div class="picture">
+      <img src="/imgs/blog/canvas.png" alt="Inspiration canvas"/>
+    </div>
+  </ComponentPost>
+
   <ComponentPost>
     <div class="graphic portrait">
       <MicrographicDotmatrix />
@@ -78,6 +86,9 @@
   .graphic.portrait {
     width: 12rem;
     padding: 4rem 0;
+  }
+  .picture img {
+      width: 100%;
   }
   .graphic.landscape {
     width: 18rem;
