@@ -114,6 +114,7 @@
 	}
 	.work-date {
 		padding-right: 0.75rem;
+		white-space: no-wrap;
 	}
 	.work-title {
 		text-decoration: underline;
