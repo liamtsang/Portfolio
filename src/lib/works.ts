@@ -13,6 +13,17 @@ export const works: Work[] = [
 		tags: ["Design", "Frontend", "Backend"],
 	},
 	{
+		slug: "room608",
+		date: "2026",
+		url: "https://room608.com",
+		title: "room608.com",
+		articleTitle: "Room608",
+		img: "/imgs/room608/home.png",
+		description:
+			"Website redesign for Room608, a film & TV production studio. Funky, retro analog feel with lots of grid overload. Homepage features a <span class='img-hover' data-hover-img='/imgs/room608/1.gif'>snaking grid of projects</span> over a dot-grid background, with monospaced text set on a type-scaling grid. Lots of thought put into the motion. Built with Next.js and Framer Motion, with PayloadCMS for the client to manage their projects.",
+		tags: ["Design", "Frontend", "Backend"],
+	},
+	{
 		slug: "jussu-objects",
 		date: "2025-2026",
 		url: "https://jussuobjects.com",
