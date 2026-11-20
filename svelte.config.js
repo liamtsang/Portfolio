@@ -19,9 +19,9 @@ const config = {
 			fallback: undefined,
 			precompress: false,
 			strict: true,
-			// adapter-vercel can't infer a runtime when building under
-			// Node 24 locally, so pin the deploy runtime explicitly.
-			runtime: "nodejs22.x",
+			// adapter-vercel can't infer a runtime for newer Node versions,
+			// so pin the deploy runtime explicitly (matches engines.node).
+			runtime: "nodejs26.x",
 		}),
 	},
 };
